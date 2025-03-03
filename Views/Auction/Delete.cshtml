@@ -12,10 +12,34 @@
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Card)
+            @Html.DisplayNameFor(model => model.Name)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Card.Condition)
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Set)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Set)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Condition)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Condition)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ImageName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ImageName)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Seller)
@@ -24,16 +48,10 @@
             @Html.DisplayFor(model => model.Seller.Id)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.StartPrice)
+            @Html.DisplayNameFor(model => model.AskingPrice)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.StartPrice)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CurrentPrice)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CurrentPrice)
+            @Html.DisplayFor(model => model.AskingPrice)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.StartTime)

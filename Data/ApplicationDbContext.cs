@@ -15,6 +15,5 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUserModel>
 
     public DbSet<BidModel> Bids { get; set; }
 
-    public DbSet<CardModel> Cards { get; set; }
     public DbSet<TransactionModel> Transactions { get; set; }
 }

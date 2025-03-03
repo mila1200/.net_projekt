@@ -1,3 +1,7 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+
 namespace CardHaven.Models;
 
 public class AuctionModel
@@ -5,11 +9,25 @@ public class AuctionModel
     //auktionens id
     public int Id { get; set; }
 
-    //kortets id
-    public int CardId {get; set;}
+    //kortets namn
+    [Required]
+    public string? Name { get; set; }
 
-    //kortmodellen
-    public CardModel? Card {get; set;}
+    [Required]
+    public string? Set {get; set;}
+
+    [Required]
+    public string? Description {get; set;}
+
+    //skick ex. Near Mint
+    public string? Condition{get; set;}
+
+    //lagra bild i databasen
+    public string? ImageName { get; set; }
+
+    //bilden i gränssnittet, (NotMapped = lagras inte i databasen)
+    [NotMapped]
+    public IFormFile? ImageFile { get; set; }
 
     //säljarid
     public string? SellerId {get; set;}
@@ -17,11 +35,11 @@ public class AuctionModel
     //skapa koppling mellan användare och vem som säljer
     public ApplicationUserModel? Seller {get; set;}
 
-    public decimal StartPrice {get; set;}
-    public decimal CurrentPrice {get; set;}
-
+    [Required]
+    public decimal AskingPrice {get; set;} = 1;
+   
     //starttid och sluttid
-    public DateTime StartTime {get; set;}
+    public DateTime StartTime {get; set;} = DateTime.Now;
     public DateTime EndTime {get; set;}
 
     //koppling till bud

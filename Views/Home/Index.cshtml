@@ -1,8 +1,26 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model IEnumerable<CardHaven.Models.AuctionModel>
+@{
+    ViewData["Title"] = "Start";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<h1 class="display-4">Sveriges största auktionssajt för samlarkort</h1>
+<h2>Populära annonser:</h2>
+
+<!--Skriver ut auktionerna till skärmen. Om inga finns visas meddelande-->
+<div>
+    <article>
+        @if (Model == null || !Model.Any())
+        {
+            <p>Inga auktioner tillgängliga...</p>
+        }
+        else
+        {
+            @foreach (var auction in Model)
+            {   
+                <div>
+                
+                </div>
+            }
+        }
+    </article>
 </div>

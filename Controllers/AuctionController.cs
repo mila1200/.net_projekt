@@ -22,7 +22,7 @@ namespace CardHaven.Controllers
         // GET: Auction
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Auctions.Include(a => a.Card).Include(a => a.Seller);
+            var applicationDbContext = _context.Auctions.Include(a => a.Seller);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -35,7 +35,6 @@ namespace CardHaven.Controllers
             }
 
             var auctionModel = await _context.Auctions
-                .Include(a => a.Card)
                 .Include(a => a.Seller)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (auctionModel == null)
@@ -49,7 +48,6 @@ namespace CardHaven.Controllers
         // GET: Auction/Create
         public IActionResult Create()
         {
-            ViewData["CardId"] = new SelectList(_context.Cards, "Id", "Condition");
             ViewData["SellerId"] = new SelectList(_context.Users, "Id", "Id");
             return View();
         }
@@ -59,7 +57,7 @@ namespace CardHaven.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,CardId,SellerId,StartPrice,CurrentPrice,StartTime,EndTime")] AuctionModel auctionModel)
+        public async Task<IActionResult> Create([Bind("Id,Name,Set,Description,Condition,ImageName,SellerId,AskingPrice,StartTime,EndTime")] AuctionModel auctionModel)
         {
             if (ModelState.IsValid)
             {
@@ -67,7 +65,6 @@ namespace CardHaven.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CardId"] = new SelectList(_context.Cards, "Id", "Condition", auctionModel.CardId);
             ViewData["SellerId"] = new SelectList(_context.Users, "Id", "Id", auctionModel.SellerId);
             return View(auctionModel);
         }
@@ -85,7 +82,6 @@ namespace CardHaven.Controllers
             {
                 return NotFound();
             }
-            ViewData["CardId"] = new SelectList(_context.Cards, "Id", "Condition", auctionModel.CardId);
             ViewData["SellerId"] = new SelectList(_context.Users, "Id", "Id", auctionModel.SellerId);
             return View(auctionModel);
         }
@@ -95,7 +91,7 @@ namespace CardHaven.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,CardId,SellerId,StartPrice,CurrentPrice,StartTime,EndTime")] AuctionModel auctionModel)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Set,Description,Condition,ImageName,SellerId,AskingPrice,StartTime,EndTime")] AuctionModel auctionModel)
         {
             if (id != auctionModel.Id)
             {
@@ -122,7 +118,6 @@ namespace CardHaven.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CardId"] = new SelectList(_context.Cards, "Id", "Condition", auctionModel.CardId);
             ViewData["SellerId"] = new SelectList(_context.Users, "Id", "Id", auctionModel.SellerId);
             return View(auctionModel);
         }
@@ -136,7 +131,6 @@ namespace CardHaven.Controllers
             }
 
             var auctionModel = await _context.Auctions
-                .Include(a => a.Card)
                 .Include(a => a.Seller)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (auctionModel == null)
