@@ -1,6 +1,6 @@
 namespace CardHaven.Models;
 
-public class Auction
+public class AuctionModel
 {
     //auktionens id
     public int Id { get; set; }
@@ -9,13 +9,13 @@ public class Auction
     public int CardId {get; set;}
 
     //kortmodellen
-    public Card? Card {get; set;}
+    public CardModel? Card {get; set;}
 
     //säljarid
     public string? SellerId {get; set;}
 
     //skapa koppling mellan användare och vem som säljer
-    public ApplicationUser? Seller {get; set;}
+    public ApplicationUserModel? Seller {get; set;}
 
     public decimal StartPrice {get; set;}
     public decimal CurrentPrice {get; set;}
@@ -25,5 +25,5 @@ public class Auction
     public DateTime EndTime {get; set;}
 
     //koppling till bud
-    public ICollection<Bid>? Bids {get; set;}
+    public ICollection<BidModel>? Bids {get; set;}
 }

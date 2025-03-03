@@ -4,18 +4,17 @@ using CardHaven.Models;
 
 namespace CardHaven.Data;
 
-public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+public class ApplicationDbContext : IdentityDbContext<ApplicationUserModel>
 {
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)
     {
     }
 
-    public DbSet<ApplicationUser>? ApplicationUsers { get; set; }
-    public DbSet<Auction> Auctions { get; set; }
+    public DbSet<AuctionModel> Auctions { get; set; }
 
-    public DbSet<Bid> Bids { get; set; }
+    public DbSet<BidModel> Bids { get; set; }
 
-    public DbSet<Card> Cards { get; set; }
-    public DbSet<Transaction> Transactions { get; set; }
+    public DbSet<CardModel> Cards { get; set; }
+    public DbSet<TransactionModel> Transactions { get; set; }
 }

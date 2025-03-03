@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CardHaven.Models;
 
-public class Card
+public class CardModel
 {
     public int Id {get; set;}
     

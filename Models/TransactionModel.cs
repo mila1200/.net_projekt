@@ -1,12 +1,12 @@
 namespace CardHaven.Models;
 
-public class Transaction
+public class TransactionModel
 {
     public int Id {get; set;}
 
     //koppling till användare
     public string? UserId {get; set;}
-    public ApplicationUser? User {get; set;}
+    public ApplicationUserModel? User {get; set;}
 
     //summa för transaktion
     public decimal Amount {get; set;}
