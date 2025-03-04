@@ -58,7 +58,7 @@
                 @Html.DisplayFor(modelItem => item.Condition)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ImageName)
+                <a href="@Url.Content("~/images/" + item.ImageName)">@Html.DisplayFor(modelItem => item.ImageName)</a>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Seller.Id)

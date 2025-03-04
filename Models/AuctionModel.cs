@@ -36,7 +36,7 @@ public class AuctionModel
     public ApplicationUserModel? Seller {get; set;}
 
     [Required]
-    public decimal AskingPrice {get; set;} = 1;
+    public int? AskingPrice {get; set;} = 1;
    
     //starttid och sluttid
     public DateTime StartTime {get; set;} = DateTime.Now;

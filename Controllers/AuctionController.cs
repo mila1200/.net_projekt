@@ -13,10 +13,15 @@ namespace CardHaven.Controllers
     public class AuctionController : Controller
     {
         private readonly ApplicationDbContext _context;
+        //läser ut sökvägarna till filsystemet för att kunna lägga bilderna i foldern "Images"
+        private readonly IWebHostEnvironment _hostEnvironment;
+        private readonly string wwwRootPath;
 
-        public AuctionController(ApplicationDbContext context)
+        public AuctionController(ApplicationDbContext context, IWebHostEnvironment hostEnvironment)
         {
             _context = context;
+            _hostEnvironment = hostEnvironment;
+            wwwRootPath = hostEnvironment.WebRootPath;
         }
 
         // GET: Auction
@@ -57,10 +62,33 @@ namespace CardHaven.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Set,Description,Condition,ImageName,SellerId,AskingPrice,StartTime,EndTime")] AuctionModel auctionModel)
+        public async Task<IActionResult> Create([Bind("Id,Name,Set,Description,Condition,ImageFile,SellerId,AskingPrice,StartTime,EndTime")] AuctionModel auctionModel)
         {
             if (ModelState.IsValid)
             {
+                //kolla efter bild
+                if (auctionModel.ImageFile != null)
+                {
+                    //generera unikt filnamn
+                    string fileName = Path.GetFileNameWithoutExtension(auctionModel.ImageFile.FileName);
+                    string extension = Path.GetExtension(auctionModel.ImageFile.FileName);
+
+                    auctionModel.ImageName = fileName = fileName.Replace(" ", String.Empty) + DateTime.Now.ToString("yymmssfff") + extension;
+
+                    string path = Path.Combine(wwwRootPath + "/images", fileName);
+
+                    //spara i filsystemet
+                    using (var fileStream = new FileStream(path, FileMode.Create))
+                    {
+                        await auctionModel.ImageFile.CopyToAsync(fileStream);
+                    }
+                }
+                //standardbild om ingen läggs till
+                else
+                {
+                    auctionModel.ImageName = "empty.jpg";
+                }
+
                 _context.Add(auctionModel);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
