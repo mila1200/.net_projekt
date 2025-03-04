@@ -22,6 +22,11 @@ namespace CardHaven.Controllers
         // GET: Transaction
         public async Task<IActionResult> Index()
         {
+            if(_context.Transactions == null)
+            {
+                return NotFound();
+            }
+
             var applicationDbContext = _context.Transactions.Include(t => t.User);
             return View(await applicationDbContext.ToListAsync());
         }

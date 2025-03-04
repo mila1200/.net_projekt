@@ -1,84 +1,29 @@
 @model IEnumerable<CardHaven.Models.AuctionModel>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Köpa";
 }
 
-<h1>Index</h1>
+<h1>Pokémon</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Set)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Condition)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ImageName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Seller)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AskingPrice)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.StartTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EndTime)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Set)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Condition)
-            </td>
-            <td>
-                <a href="@Url.Content("~/images/" + item.ImageName)">
-                 <img class="createdAuctionImages" src="@Url.Content("~/images/" + item.ImageName)" loading="lazy" alt=""></a>
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Seller.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AskingPrice)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StartTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EndTime)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div>
+    <article>
+        @if (Model == null || !Model.Any())
+        {
+            <p>Inga auktioner tillgängliga...</p>
+        }
+        else
+        {
+            @foreach (var auction in Model)
+            {
+                <div>
+                    <img src="@Url.Content("~/images/" + auction.ImageName)" loading="lazy" alt="">
+                    <h3><strong>@auction.Name</strong></h3>
+                    <p>Set: @auction.Set</p>
+                    <p>@auction.EndTime</p>
+                    <p>Nuvarande bud: <strong>@auction.AskingPrice</strong> tokens</p>
+                </div>
+            }
+        }
+    </article>
+</div>

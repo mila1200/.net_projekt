@@ -31,13 +31,14 @@ public class AuctionModel
     public IFormFile? ImageFile { get; set; }
 
     //säljarid
+    
     public string? SellerId {get; set;}
 
     //skapa koppling mellan användare och vem som säljer
     public ApplicationUserModel? Seller {get; set;}
 
     [Required]
-    public int? AskingPrice {get; set;} = 1;
+    public int AskingPrice {get; set;} = 1;
    
     //starttid och sluttid
     public DateTime StartTime {get; set;} = DateTime.Now;

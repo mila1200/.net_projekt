@@ -68,44 +68,51 @@ namespace CardHaven.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,Set,Description,Condition,ImageFile,SellerId,AskingPrice,StartTime,EndTime")] AuctionModel auctionModel)
         {
-            if (ModelState.IsValid)
-    {
-        // Skapa unika sökvägar
-        string fileName = Path.GetFileNameWithoutExtension(auctionModel.ImageFile.FileName).Replace(" ", String.Empty);
-        string extension = Path.GetExtension(auctionModel.ImageFile.FileName);
-
-        //Tidsstämpel
-        string timestamp = DateTime.Now.ToString("yymmssfff");
-
-        // Skapa filnamn för orignalbild och webp
-        string originalFileName = fileName + timestamp + extension;
-        string webpFileName = fileName + timestamp + ".webp";
-
-        string originalPath = Path.Combine(wwwRootPath, "images", originalFileName);
-        string webpPath = Path.Combine(wwwRootPath, "images", webpFileName);
-
-        // Spara originalbilden
-        using (var fileStream = new FileStream(originalPath, FileMode.Create))
-        {
-            await auctionModel.ImageFile.CopyToAsync(fileStream);
-        }
-
-        // Konvertera och spara WebP
-        using (var image = Image.Load(auctionModel.ImageFile.OpenReadStream()))
-        {
-            image.Mutate(x => x.Resize(new ResizeOptions
+            //nullkontroll. Felmeddelande om ingen bild bifogas
+            if (auctionModel.ImageFile == null)
             {
-                Mode = ResizeMode.Max,
-                Size = new Size(800, 600)
-            }));
+                ModelState.AddModelError("ImageFile", "En bild måste bifogas.");
+                return View(auctionModel);
+            }
 
-            //kvalitet 80
-            await image.SaveAsync(webpPath, new WebpEncoder() { Quality = 80 });
-        }
+            if (ModelState.IsValid)
+            {
+                // Skapa unika sökvägar
+                string fileName = Path.GetFileNameWithoutExtension(auctionModel.ImageFile.FileName).Replace(" ", String.Empty);
+                string extension = Path.GetExtension(auctionModel.ImageFile.FileName);
 
-        //spara webp i databasen
-        auctionModel.ImageName = webpFileName;
-               
+                //Tidsstämpel
+                string timestamp = DateTime.Now.ToString("yymmssfff");
+
+                // Skapa filnamn för orignalbild och webp
+                string originalFileName = fileName + timestamp + extension;
+                string webpFileName = fileName + timestamp + ".webp";
+
+                string originalPath = Path.Combine(wwwRootPath, "images", originalFileName);
+                string webpPath = Path.Combine(wwwRootPath, "images", webpFileName);
+
+                // Spara originalbilden
+                using (var fileStream = new FileStream(originalPath, FileMode.Create))
+                {
+                    await auctionModel.ImageFile.CopyToAsync(fileStream);
+                }
+
+                // Konvertera och spara WebP
+                using (var image = Image.Load(auctionModel.ImageFile.OpenReadStream()))
+                {
+                    image.Mutate(x => x.Resize(new ResizeOptions
+                    {
+                        Mode = ResizeMode.Max,
+                        Size = new Size(800, 600)
+                    }));
+
+                    //kvalitet 80
+                    await image.SaveAsync(webpPath, new WebpEncoder() { Quality = 80 });
+                }
+
+                //spara webp i databasen
+                auctionModel.ImageName = webpFileName;
+
                 _context.Add(auctionModel);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
