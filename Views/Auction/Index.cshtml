@@ -59,7 +59,7 @@
             </td>
             <td>
                 <a href="@Url.Content("~/images/" + item.ImageName)">
-                 <img class="createdAuctionImages" src="@Url.Content("~/images/" + item.ImageName)" alt=""></a>
+                 <img class="createdAuctionImages" src="@Url.Content("~/images/" + item.ImageName)" loading="lazy" alt=""></a>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Seller.Id)

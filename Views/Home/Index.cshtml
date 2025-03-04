@@ -18,7 +18,7 @@
             @foreach (var auction in Model)
             {
                 <div>
-                    <img class="auctionImages" src="@Url.Content("~/images/" + auction.ImageName)" alt="" />
+                    <img src="@Url.Content("~/images/" + auction.ImageName)" loading="lazy" alt="">
                     <h3><strong>@auction.Name</strong></h3>
                     <p>Set: @auction.Set</p>
                     <p>@auction.EndTime</p>
