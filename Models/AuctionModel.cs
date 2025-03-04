@@ -27,6 +27,7 @@ public class AuctionModel
 
     //bilden i gränssnittet, (NotMapped = lagras inte i databasen)
     [NotMapped]
+    [Required]
     public IFormFile? ImageFile { get; set; }
 
     //säljarid

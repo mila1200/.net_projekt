@@ -16,15 +16,16 @@
         else
         {
             @foreach (var auction in Model)
-            {   
+            {
                 <div>
-                <div>@auction.ImageFile</div>
-                <h3><strong>@auction.Name</strong></h3>
-                <p>Set: @auction.Set</p>
-                <p>@auction.EndTime</p>
-                <p>Nuvarande bud: <strong>@auction.AskingPrice</strong> tokens</p>
+                    <img class="auctionImages" src="@Url.Content("~/images/" + auction.ImageName)" alt="" />
+                    <h3><strong>@auction.Name</strong></h3>
+                    <p>Set: @auction.Set</p>
+                    <p>@auction.EndTime</p>
+                    <p>Nuvarande bud: <strong>@auction.AskingPrice</strong> tokens</p>
                 </div>
             }
+            
         }
     </article>
 </div>

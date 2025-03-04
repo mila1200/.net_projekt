@@ -58,7 +58,8 @@
                 @Html.DisplayFor(modelItem => item.Condition)
             </td>
             <td>
-                <a href="@Url.Content("~/images/" + item.ImageName)">@Html.DisplayFor(modelItem => item.ImageName)</a>
+                <a href="@Url.Content("~/images/" + item.ImageName)">
+                 <img class="createdAuctionImages" src="@Url.Content("~/images/" + item.ImageName)" alt=""></a>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Seller.Id)

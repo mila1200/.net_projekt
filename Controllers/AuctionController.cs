@@ -66,9 +66,6 @@ namespace CardHaven.Controllers
         {
             if (ModelState.IsValid)
             {
-                //kolla efter bild
-                if (auctionModel.ImageFile != null)
-                {
                     //generera unikt filnamn
                     string fileName = Path.GetFileNameWithoutExtension(auctionModel.ImageFile.FileName);
                     string extension = Path.GetExtension(auctionModel.ImageFile.FileName);
@@ -82,13 +79,8 @@ namespace CardHaven.Controllers
                     {
                         await auctionModel.ImageFile.CopyToAsync(fileStream);
                     }
-                }
-                //standardbild om ingen läggs till
-                else
-                {
-                    auctionModel.ImageName = "empty.jpg";
-                }
-
+                
+               
                 _context.Add(auctionModel);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
