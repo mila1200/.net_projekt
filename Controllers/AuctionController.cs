@@ -7,6 +7,10 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CardHaven.Data;
 using CardHaven.Models;
+using Microsoft.Net.Http.Headers;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Processing;
+using SixLabors.ImageSharp.Formats.Webp;
 
 namespace CardHaven.Controllers
 {
@@ -65,21 +69,42 @@ namespace CardHaven.Controllers
         public async Task<IActionResult> Create([Bind("Id,Name,Set,Description,Condition,ImageFile,SellerId,AskingPrice,StartTime,EndTime")] AuctionModel auctionModel)
         {
             if (ModelState.IsValid)
+    {
+        // Skapa unika sökvägar
+        string fileName = Path.GetFileNameWithoutExtension(auctionModel.ImageFile.FileName).Replace(" ", String.Empty);
+        string extension = Path.GetExtension(auctionModel.ImageFile.FileName);
+
+        //Tidsstämpel
+        string timestamp = DateTime.Now.ToString("yymmssfff");
+
+        // Skapa filnamn för orignalbild och webp
+        string originalFileName = fileName + timestamp + extension;
+        string webpFileName = fileName + timestamp + ".webp";
+
+        string originalPath = Path.Combine(wwwRootPath, "images", originalFileName);
+        string webpPath = Path.Combine(wwwRootPath, "images", webpFileName);
+
+        // Spara originalbilden
+        using (var fileStream = new FileStream(originalPath, FileMode.Create))
+        {
+            await auctionModel.ImageFile.CopyToAsync(fileStream);
+        }
+
+        // Konvertera och spara WebP
+        using (var image = Image.Load(auctionModel.ImageFile.OpenReadStream()))
+        {
+            image.Mutate(x => x.Resize(new ResizeOptions
             {
-                    //generera unikt filnamn
-                    string fileName = Path.GetFileNameWithoutExtension(auctionModel.ImageFile.FileName);
-                    string extension = Path.GetExtension(auctionModel.ImageFile.FileName);
+                Mode = ResizeMode.Max,
+                Size = new Size(800, 600)
+            }));
 
-                    auctionModel.ImageName = fileName = fileName.Replace(" ", String.Empty) + DateTime.Now.ToString("yymmssfff") + extension;
+            //kvalitet 80
+            await image.SaveAsync(webpPath, new WebpEncoder() { Quality = 80 });
+        }
 
-                    string path = Path.Combine(wwwRootPath + "/images", fileName);
-
-                    //spara i filsystemet
-                    using (var fileStream = new FileStream(path, FileMode.Create))
-                    {
-                        await auctionModel.ImageFile.CopyToAsync(fileStream);
-                    }
-                
+        //spara webp i databasen
+        auctionModel.ImageName = webpFileName;
                
                 _context.Add(auctionModel);
                 await _context.SaveChangesAsync();
