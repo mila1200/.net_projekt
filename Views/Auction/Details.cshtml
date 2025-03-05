@@ -13,11 +13,11 @@
         <p><strong>Beskrivning:</strong> @Model.Description</p>
         @if (Model.Condition != null)
         {
-        <p><strong>Skick:</strong> @Model.Condition</p>
+            <p><strong>Skick:</strong> @Model.Condition</p>
         }
         else
         {
-        <p><strong>Skick:</strong> <em>Saknas uppgifter</em></p>
+            <p><strong>Skick:</strong> <em>Saknas uppgifter</em></p>
         }
         <p><strong>Säljare:</strong> @Model.Seller</p>
         <hr />
@@ -28,31 +28,31 @@
         <h2>Budhistorik</h2>
         @if (Model.Bids.Any())
         {
-        <thead>
-            <tr>
-                <th>Belopp</th>
-                <th>Budgivare</th>
-                <th>Tid</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!--loopa igenom bud och organisera dem id fallande ordning-->
-            @foreach (var bid in Model.Bids.OrderByDescending(bids => bids.PlacedAt))
-            {
+            <thead>
                 <tr>
-                    <td>@bid.Amount tokens</td>
-                    @if (bid.User != null)
-                    {
-                        <td>@bid.User.UserName</td>
-                    }
-                    else
-                    {
-                        <td>Användare okänd...</td>
-                    }
-                    <td>@bid.PlacedAt</td>
+                    <th>Belopp</th>
+                    <th>Budgivare</th>
+                    <th>Tid</th>
                 </tr>
-            }
-        </tbody>
+            </thead>
+            <tbody>
+                <!--loopa igenom bud och organisera dem id fallande ordning-->
+                @foreach (var bid in Model.Bids.OrderByDescending(bids => bids.PlacedAt))
+                {
+                    <tr>
+                        <td>@bid.Amount tokens</td>
+                        @if (bid.User != null)
+                        {
+                            <td>@bid.User.UserName</td>
+                        }
+                        else
+                        {
+                            <td>Användare okänd...</td>
+                        }
+                        <td>@bid.PlacedAt</td>
+                    </tr>
+                }
+            </tbody>
         }
         else
         {
@@ -61,13 +61,24 @@
     </section>
     <section>
         <h2>Lägg ett bud</h2>
-        <form asp-controller="Bid" assp-action="Create" method="post">
-        <input type="hidden" name="AuctionId" value="@Model.Id" />
-        <div class="form-group">
-            <label for="Amount">Antal tokens:</label>
-            <input type="number" class="form-control" name="amount" id="amount" required />
-        </div>
-        <button type="submit" class="btn btn-success">Lägg bud</button>
+        
+        <!--Felmeddelande om för lågt bud, successmeddelande om lyckat bud.-->
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+            }
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+            }
+        
+        <form asp-controller="Bid" asp-action="Create" method="post">
+            <input type="hidden" name="AuctionId" value="@Model.Id" />
+            <div class="form-group">
+                <label for="Amount">Antal tokens:</label>
+                <input type="number" class="form-control" name="Amount" id="amount" required />
+            </div>
+            <button type="submit" class="btn btn-success">Lägg bud</button>
         </form>
     </section>
     <a asp-action="Index">Tillbaka till annonser</a>

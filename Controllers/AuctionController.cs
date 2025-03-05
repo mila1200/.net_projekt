@@ -42,7 +42,7 @@ namespace CardHaven.Controllers
             {
                 return NotFound();
             }
-
+            //skicka bud och användare till vyn
             var auctionModel = await _context.Auctions
                 .Include(a => a.Seller)
                 .Include(a => a.Bids)

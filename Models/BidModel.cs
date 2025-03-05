@@ -14,7 +14,7 @@ public class BidModel
     public ApplicationUserModel? User {get; set;}
 
     //hur mycket bjuds
-    public decimal Amount {get; set;}
+    public int Amount {get; set;}
 
     public DateTime PlacedAt {get; set;} = DateTime.Now;
 }
