@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using CardHaven.Data;
 using CardHaven.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CardHaven.Controllers
 {
@@ -22,11 +23,33 @@ namespace CardHaven.Controllers
             _userManager = userManager;
         }
 
+        [Authorize]
         // GET: Bid
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Bids.Include(b => b.Auction).Include(b => b.User);
-            return View(await applicationDbContext.ToListAsync());
+            //hämta användare
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            var userBids = await _context.Bids
+            .Where(bids => bids.UserId == user.Id)
+            .Include(bids => bids.Auction)
+            //sortera efter när budet lades
+            .OrderByDescending(bids => bids.PlacedAt)
+            .ToListAsync();
+
+            //unika bud för att listan under "Mina bud" endast ska visa annonsen en gång
+            var uniqueBids = userBids
+            //gruppera efter auktion
+            .GroupBy(bid => bid.AuctionId)
+            //välj det senaste budet
+            .Select(group => group.First())
+            .ToList();
+            
+            return View(uniqueBids);
         }
 
         // GET: Bid/Details/5

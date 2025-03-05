@@ -21,8 +21,7 @@ public class HomeController : Controller
     public async Task<IActionResult> Index()
     {   
         //plocka in info om korten för att kunna skriva ut den infon
-        var auctions = await _context.Auctions
-        .ToListAsync();
+        var auctions = await _context.Auctions.ToListAsync();
 
         //skicka auktioner till vy
         return View(auctions);

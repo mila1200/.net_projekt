@@ -4,7 +4,7 @@
 }
 
 <h1 class="display-4">Sveriges största auktionssajt för samlarkort</h1>
-<h2>Populära annonser:</h2>
+<h2>Pokémonkort</h2>
 
 <!--Skriver ut auktionerna till skärmen. Om inga finns visas meddelande-->
 <div>
@@ -23,9 +23,9 @@
                     <p>Set: @auction.Set</p>
                     <p>@auction.EndTime</p>
                     <p>Nuvarande bud: <strong>@auction.AskingPrice</strong> tokens</p>
+                    <a asp-controller="Auction" asp-action="Details" asp-route-id="@auction.Id" class="btn btn-success">Lägg bud</a>
                 </div>
             }
-            
         }
     </article>
 </div>

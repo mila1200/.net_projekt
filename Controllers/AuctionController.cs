@@ -11,9 +11,11 @@ using Microsoft.Net.Http.Headers;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Processing;
 using SixLabors.ImageSharp.Formats.Webp;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CardHaven.Controllers
 {
+    [Authorize]
     public class AuctionController : Controller
     {
         private readonly ApplicationDbContext _context;

@@ -6,26 +6,3 @@
 
 <h1>Pokémon</h1>
 
-<div>
-    <article>
-        @if (Model == null || !Model.Any())
-        {
-            <p>Inga auktioner tillgängliga...</p>
-        }
-        else
-        {
-            @foreach (var auction in Model)
-            {
-                <div>
-                    <a asp-action="Details" asp-route-id="@auction.Id">
-                    <img src="@Url.Content("~/images/" + auction.ImageName)" loading="lazy" alt="">
-                    <h3><strong>@auction.Name</strong></h3>
-                    <p>Set: @auction.Set</p>
-                    <p>@auction.EndTime</p>
-                    <p>Nuvarande bud: <strong>@auction.AskingPrice</strong> tokens</p>
-                    </a>
-                </div>
-            }
-        }
-    </article>
-</div>

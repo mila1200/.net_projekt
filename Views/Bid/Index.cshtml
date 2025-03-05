@@ -1,53 +1,34 @@
 @model IEnumerable<CardHaven.Models.BidModel>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Mina Bud";
 }
 
-<h1>Index</h1>
+<h1>Mina Bud</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Auction)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.User)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Amount)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PlacedAt)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Auction.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.User.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Amount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PlacedAt)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div class="row">
+    @if (!Model.Any())
+    {
+        <p>Du har inte budat på några auktioner ännu...</p>
+    }
+    else
+    {
+        @foreach (var bid in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <a asp-controller="Auction" asp-action="Details" asp-route-id="@bid.Auction.Id" class="text-decoration-none text-dark">
+                        <img src="@Url.Content("~/images/" + bid.Auction.ImageName)" class="card-img-top" loading="lazy" alt="@bid.Auction.Name">
+                        <div class="card-body">
+                            <h5 class="card-title">@bid.Auction.Name</h5>
+                            <p class="card-text"><strong>Set:</strong> @bid.Auction.Set</p>
+                            <p class="card-text"><strong>Slutar:</strong> @bid.Auction.EndTime.ToString("g")</p>
+                            <p class="card-text"><strong>Nuvarande bud:</strong> @bid.Auction.AskingPrice tokens</p>
+                            <p class="card-text"><strong>Mitt bud:</strong> @bid.Amount tokens</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        }
+    }
+</div>
