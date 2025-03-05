@@ -45,7 +45,10 @@ namespace CardHaven.Controllers
 
             var auctionModel = await _context.Auctions
                 .Include(a => a.Seller)
+                .Include(a => a.Bids)
+                .ThenInclude(b => b.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
+            
             if (auctionModel == null)
             {
                 return NotFound();

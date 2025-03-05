@@ -1,72 +1,74 @@
 @model CardHaven.Models.AuctionModel
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Lägg bud";
 }
 
-<h1>Details</h1>
-
 <div>
-    <h4>AuctionModel</h4>
+    <h1>@Model.Name</h1>
     <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Set)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Set)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Condition)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Condition)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ImageName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ImageName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Seller)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Seller.Id)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AskingPrice)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AskingPrice)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.StartTime)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.StartTime)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.EndTime)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.EndTime)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <div>
+        <img src="@Url.Content("~/images/" + Model.ImageName)" loading="lazy" alt="">
+        <p><strong>Set:</strong> @Model.Set</p>
+        <p><strong>Beskrivning:</strong> @Model.Description</p>
+        @if (Model.Condition != null)
+        {
+        <p><strong>Skick:</strong> @Model.Condition</p>
+        }
+        else
+        {
+        <p><strong>Skick:</strong> <em>Saknas uppgifter</em></p>
+        }
+        <p><strong>Säljare:</strong> @Model.Seller</p>
+        <hr />
+        <p><strong>Aktuellt bud:</strong> @Model.AskingPrice tokens</p>
+        <p><strong>Avslutas:</strong> @Model.EndTime</p>
+    </div>
+    <section>
+        <h2>Budhistorik</h2>
+        @if (Model.Bids.Any())
+        {
+        <thead>
+            <tr>
+                <th>Belopp</th>
+                <th>Budgivare</th>
+                <th>Tid</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!--loopa igenom bud och organisera dem id fallande ordning-->
+            @foreach (var bid in Model.Bids.OrderByDescending(bids => bids.PlacedAt))
+            {
+                <tr>
+                    <td>@bid.Amount tokens</td>
+                    @if (bid.User != null)
+                    {
+                        <td>@bid.User.UserName</td>
+                    }
+                    else
+                    {
+                        <td>Användare okänd...</td>
+                    }
+                    <td>@bid.PlacedAt</td>
+                </tr>
+            }
+        </tbody>
+        }
+        else
+        {
+            <p><em>Bud saknas. Bli först med att lägga ett bud.</em></p>
+        }
+    </section>
+    <section>
+        <h2>Lägg ett bud</h2>
+        <form asp-controller="Bid" assp-action="Create" method="post">
+        <input type="hidden" name="AuctionId" value="@Model.Id" />
+        <div class="form-group">
+            <label for="Amount">Antal tokens:</label>
+            <input type="number" class="form-control" name="amount" id="amount" required />
+        </div>
+        <button type="submit" class="btn btn-success">Lägg bud</button>
+        </form>
+    </section>
+    <a asp-action="Index">Tillbaka till annonser</a>
 </div>
