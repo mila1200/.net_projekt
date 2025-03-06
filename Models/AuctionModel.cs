@@ -32,11 +32,9 @@ public class AuctionModel
     //bilden i gränssnittet, (NotMapped = lagras inte i databasen)
     [NotMapped]
     [Display(Name = "Bifoga bild")]
-    [Required]
     public IFormFile? ImageFile { get; set; }
 
     //säljarid
-    
     public string? SellerId {get; set;}
 
     //skapa koppling mellan användare och vem som säljer
@@ -54,4 +52,7 @@ public class AuctionModel
 
     //koppling till bud. new List<Bidmodel> skapar en tom lista istälelt för att jag ska behöva hantera ev. null-värden
     public ICollection<BidModel> Bids {get; set;} = new List<BidModel>();
+
+    //avslutad?
+    public bool IsClosed { get; set; } = false;
 }

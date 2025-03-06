@@ -39,11 +39,16 @@
                 </select>
                 <span asp-validation-for="Condition" class="text-danger"></span>
             </div>
-            <!--accept image/* tar emot vilken typ av fil som helst-->
-            <div class="form-group">
-                <label asp-for="ImageFile" class="control-label"></label>
-                <input asp-for="ImageFile" class="form-control" accept="image/*" />
-                <span asp-validation-for="ImageFile" class="text-danger"></span>
+             <div class="form-group">
+                <label>Bild</label>
+                @if (!string.IsNullOrEmpty(Model.ImageName))
+                {
+                    <img src="@Url.Content("~/images/" + Model.ImageName)" alt="@Model.ImageName" />
+                }
+                else
+                {
+                    <p><em>Ingen bild uppladdad</em></p>
+                }
             </div>
             <div class="form-group">
                 <label asp-for="AskingPrice" class="control-label"></label>

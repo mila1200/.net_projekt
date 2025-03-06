@@ -1,7 +1,7 @@
 @model IEnumerable<CardHaven.Models.AuctionModel>
 
 @{
-    ViewData["Title"] = "Mina annonser";
+    ViewData["Title"] = "Mina auktioner";
 }
 
 <h1>Mina auktioner</h1>
@@ -12,18 +12,33 @@
         {
             <a asp-controller="Auction" asp-action="Details" asp-route-id="@auction.Id"
                 class="text-decoration-none text-dark">
-                <img src="@Url.Content("~/images/" + auction.ImageName)" class="card-img-top" loading="lazy"
-                    alt="@auction.Name">
+
+                @if (!auction.IsClosed && auction.EndTime > DateTime.Now)
+                    {
+                         <img src="@Url.Content("~/images/" + auction.ImageName)" class="card-img-top" loading="lazy" alt="@auction.Name">
+                    }
+                    else
+                    {
+                        <img src="@Url.Content("~/images/" + auction.ImageName)" class="card-img-top" loading="lazy" alt="@auction.Name" style="opacity: 0.5;">
+                    }
                 <div class="card-body">
                     <h5 class="card-title">@auction.Name</h5>
                     <p class="card-text"><strong>Slutar:</strong> @auction.EndTime.ToString("g")</p>
                     <p class="card-text"><strong>Nuvarande bud:</strong> @auction.AskingPrice tokens</p>
-                    <a asp-action="Edit" asp-route-id="@auction.Id" class="btn btn-primary">Redigera</a>
-                    <a asp-action="Delete" asp-route-id="@auction.Id" class="btn btn-danger">Radera</a>
+                    @if (!auction.IsClosed && auction.EndTime > DateTime.Now)
+                    {
+                        <a asp-action="Edit" asp-route-id="@auction.Id" class="btn btn-primary">Redigera</a>
+                        <a asp-action="Delete" asp-route-id="@auction.Id" class="btn btn-danger">Radera</a>
+                    }
+                    else
+                    {
+                        <span class="text-danger">Auktionen är avslutad</span>
+                    }
+
                 </div>
             </a>
 
-            
+
         }
     </div>
 </div>

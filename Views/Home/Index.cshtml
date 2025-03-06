@@ -18,12 +18,27 @@
             @foreach (var auction in Model)
             {
                 <div>
-                    <img src="@Url.Content("~/images/" + auction.ImageName)" loading="lazy" alt="">
+                    @if (!auction.IsClosed && auction.EndTime > DateTime.Now)
+                    {
+                        <img src="@Url.Content("~/images/" + auction.ImageName)" loading="lazy" alt="@auction.ImageName">
+                    }
+                    else
+                    {
+                        <img src="@Url.Content("~/images/" + auction.ImageName)" loading="lazy" alt="@auction.ImageName" style="opacity: 0.5;">
+                    }
                     <h3><strong>@auction.Name</strong></h3>
                     <p>Set: @auction.Set</p>
-                    <p>@auction.EndTime</p>
+                    <p>Slutar: @auction.EndTime</p>
                     <p>Nuvarande bud: <strong>@auction.AskingPrice</strong> tokens</p>
-                    <a asp-controller="Auction" asp-action="Details" asp-route-id="@auction.Id" class="btn btn-success">Lägg bud</a>
+                    @if (!auction.IsClosed && auction.EndTime > DateTime.Now)
+                    {
+                        <a asp-controller="Auction" asp-action="Details" asp-route-id="@auction.Id" class="btn btn-success">Lägg bud</a>
+                    }
+                    else
+                    {
+                        <span class="text-danger">Auktionen är avslutad</span>
+                    }
+                  
                 </div>
             }
         }

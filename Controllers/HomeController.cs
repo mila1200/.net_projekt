@@ -21,7 +21,20 @@ public class HomeController : Controller
     public async Task<IActionResult> Index()
     {   
         //plocka in info om korten för att kunna skriva ut den infon
-        var auctions = await _context.Auctions.ToListAsync();
+        var auctions = await _context.Auctions
+        .OrderByDescending(a => a.EndTime)
+        .ToListAsync();
+
+        //om tiden gått ut ändras isClosed till true
+        foreach (var auction in auctions)
+        {
+            if (auction.EndTime < DateTime.Now && !auction.IsClosed)
+            {
+                auction.IsClosed = true;
+            }
+        }
+
+        await _context.SaveChangesAsync();
 
         //skicka auktioner till vy
         return View(auctions);

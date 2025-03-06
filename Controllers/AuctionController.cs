@@ -39,7 +39,10 @@ namespace CardHaven.Controllers
         // GET: Auction
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Auctions.Include(a => a.Seller);
+            var applicationDbContext = _context.Auctions
+            .Include(a => a.Seller)
+            .OrderByDescending(a => a.EndTime);
+
             return View(await applicationDbContext.ToListAsync());
         }
 
