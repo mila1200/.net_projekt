@@ -246,5 +246,19 @@ namespace CardHaven.Controllers
         {
             return _context.Auctions.Any(e => e.Id == id);
         }
+
+        //hämtar auktioner som skapats av specifik användare
+        public async Task<IActionResult> UserAuctions()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            
+            if (user == null)
+            {
+                RedirectToAction("Login", "Account");
+            }
+            
+            var myAuctions = _context.Auctions.Where(auction => auction.SellerId == user.Id).ToList();
+            return View(myAuctions);
+        }
     }
 }
