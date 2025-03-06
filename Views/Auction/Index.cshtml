@@ -10,9 +10,6 @@
     <div class="card">
         @foreach (var auction in Model)
         {
-            <a asp-controller="Auction" asp-action="Details" asp-route-id="@auction.Id"
-                class="text-decoration-none text-dark">
-
                 @if (!auction.IsClosed && auction.EndTime > DateTime.Now)
                     {
                          <img src="@Url.Content("~/images/" + auction.ImageName)" class="card-img-top" loading="lazy" alt="@auction.Name">
@@ -23,20 +20,30 @@
                     }
                 <div class="card-body">
                     <h5 class="card-title">@auction.Name</h5>
+                    <p class="card-text"><strong>Set:</strong> @auction.Set </p>
+                    <p class="card-text"><strong>Beskrivning:</strong> @auction.Description</p>
+                    <p class="card-text"><strong>Skick:</strong> @auction.Condition</p>
                     <p class="card-text"><strong>Slutar:</strong> @auction.EndTime.ToString("g")</p>
                     <p class="card-text"><strong>Nuvarande bud:</strong> @auction.AskingPrice tokens</p>
                     @if (!auction.IsClosed && auction.EndTime > DateTime.Now)
                     {
+                        @if(!auction.Bids.Any())
+                        {
                         <a asp-action="Edit" asp-route-id="@auction.Id" class="btn btn-primary">Redigera</a>
                         <a asp-action="Delete" asp-route-id="@auction.Id" class="btn btn-danger">Radera</a>
+                        }
+                        else
+                        {
+                            <span class="text-danger">Kan ej redigeras eller raderas - bud finns</span>
+                        }
                     }
                     else
                     {
                         <span class="text-danger">Auktionen är avslutad</span>
                     }
-
+                    
                 </div>
-            </a>
+            
 
 
         }

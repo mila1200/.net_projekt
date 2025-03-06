@@ -41,6 +41,7 @@ namespace CardHaven.Controllers
         {
             var applicationDbContext = _context.Auctions
             .Include(a => a.Seller)
+            .Include(a => a.Bids)
             .OrderByDescending(a => a.EndTime);
 
             return View(await applicationDbContext.ToListAsync());
