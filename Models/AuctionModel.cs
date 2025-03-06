@@ -10,16 +10,20 @@ public class AuctionModel
     public int Id { get; set; }
 
     //kortets namn
+    
     [Required]
+    [Display(Name = "Rubrik")]
     public string? Name { get; set; }
 
     [Required]
     public string? Set {get; set;}
 
+    [Display(Name = "Beskrivning")]
     [Required]
     public string? Description {get; set;}
 
     //skick ex. Near Mint
+    [Display(Name = "Skick")]
     public string? Condition{get; set;}
 
     //lagra bild i databasen
@@ -27,6 +31,7 @@ public class AuctionModel
 
     //bilden i gränssnittet, (NotMapped = lagras inte i databasen)
     [NotMapped]
+    [Display(Name = "Bifoga bild")]
     [Required]
     public IFormFile? ImageFile { get; set; }
 
@@ -38,10 +43,13 @@ public class AuctionModel
     public ApplicationUserModel? Seller {get; set;}
 
     [Required]
+    [Display(Name = "Utropspris")]
     public int AskingPrice {get; set;} = 1;
    
     //starttid och sluttid
     public DateTime StartTime {get; set;} = DateTime.Now;
+
+    [Display(Name = "Avslutas")]
     public DateTime EndTime {get; set;}
 
     //koppling till bud. new List<Bidmodel> skapar en tom lista istälelt för att jag ska behöva hantera ev. null-värden

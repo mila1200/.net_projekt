@@ -12,6 +12,9 @@ using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Processing;
 using SixLabors.ImageSharp.Formats.Webp;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using System.Diagnostics.CodeAnalysis;
+
 
 namespace CardHaven.Controllers
 {
@@ -22,12 +25,15 @@ namespace CardHaven.Controllers
         //läser ut sökvägarna till filsystemet för att kunna lägga bilderna i foldern "Images"
         private readonly IWebHostEnvironment _hostEnvironment;
         private readonly string wwwRootPath;
+        //för att hämta inloggad användare
+        private readonly UserManager<ApplicationUserModel> _userManager;
 
-        public AuctionController(ApplicationDbContext context, IWebHostEnvironment hostEnvironment)
+        public AuctionController(ApplicationDbContext context, IWebHostEnvironment hostEnvironment, UserManager<ApplicationUserModel> userManager)
         {
             _context = context;
             _hostEnvironment = hostEnvironment;
             wwwRootPath = hostEnvironment.WebRootPath;
+            _userManager = userManager;
         }
 
         // GET: Auction
@@ -71,8 +77,31 @@ namespace CardHaven.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Set,Description,Condition,ImageFile,SellerId,AskingPrice,StartTime,EndTime")] AuctionModel auctionModel)
+        public async Task<IActionResult> Create([Bind("Id,Name,Set,Description,Condition,ImageFile,AskingPrice,EndTime")] AuctionModel auctionModel)
         {
+            var user = await _userManager.GetUserAsync(User);
+
+            if(user == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            //sätt sellerId till användarens ID
+            auctionModel.SellerId = user.Id;
+
+            //sätt starttime till start av annonsen
+            auctionModel.StartTime = DateTime.Now;
+
+            //tidsintervall
+            DateTime minEndTime = DateTime.Now.AddDays(1);
+            DateTime maxEndTime = DateTime.Now.AddDays(7);
+
+            //kontroll av tidsintervall
+            if(auctionModel.EndTime < minEndTime || auctionModel.EndTime > maxEndTime)
+            {
+                ModelState.AddModelError("EndTime", "Sluttiden måste vara mellan 1 dag och 7 dagar framåt");
+            }
+
             //nullkontroll. Felmeddelande om ingen bild bifogas
             if (auctionModel.ImageFile == null)
             {

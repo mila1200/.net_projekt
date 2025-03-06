@@ -5,8 +5,6 @@
 }
 
 <h1>Skapa ny annons</h1>
-
-<h4>AuctionModel</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -24,12 +22,21 @@
             </div>
             <div class="form-group">
                 <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
+                <textarea asp-for="Description" class="form-control"></textarea>
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Condition" class="control-label"></label>
-                <input asp-for="Condition" class="form-control" />
+                <select asp-for="Condition" class="form-control">
+                <option value="Mint">Mint</option>
+                <option value="Near Mint">Near Mint</option>
+                <option value="Excellent">Excellent</option>
+                <option value="Good">Good</option>
+                <option value="Light Played">Light Played</option>
+                <option value="Played">Played</option>
+                <option value="Poor">Poor</option>
+                <option value="Ej Bedömd">Ej Bedömd</option>
+                </select>
                 <span asp-validation-for="Condition" class="text-danger"></span>
             </div>
             <!--accept image/* tar emot vilken typ av fil som helst-->
@@ -39,18 +46,9 @@
                 <span asp-validation-for="ImageFile" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="SellerId" class="control-label"></label>
-                <select asp-for="SellerId" class ="form-control" asp-items="ViewBag.SellerId"></select>
-            </div>
-            <div class="form-group">
                 <label asp-for="AskingPrice" class="control-label"></label>
                 <input asp-for="AskingPrice" class="form-control" />
                 <span asp-validation-for="AskingPrice" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="StartTime" class="control-label"></label>
-                <input asp-for="StartTime" class="form-control" />
-                <span asp-validation-for="StartTime" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="EndTime" class="control-label"></label>
@@ -58,14 +56,10 @@
                 <span asp-validation-for="EndTime" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Publicera" class="btn btn-primary" />
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {
