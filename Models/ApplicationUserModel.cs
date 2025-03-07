@@ -1,5 +1,6 @@
 //förlängnin av användare
 
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
 
@@ -8,6 +9,8 @@ namespace CardHaven.Models
     public class ApplicationUserModel : IdentityUser
     {
         //Användarnamn
+        [Required]
+        [Display(Name = "Användarnamn")]
         public string? DisplayName { get; set; }
 
         //Saldo

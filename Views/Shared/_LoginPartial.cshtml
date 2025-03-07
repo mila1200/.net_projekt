@@ -3,10 +3,16 @@
 @inject UserManager<ApplicationUserModel> UserManager
 
 <ul class="navbar-nav">
+
+
 @if (SignInManager.IsSignedIn(User))
 {
+    //hämtar användarnamn
+    var user = await UserManager.GetUserAsync(User);
+    var displayName = user?.DisplayName ?? "Okänd användare";
+    
     <li class="nav-item">
-        <a  class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Inloggad som: <strong>@User.Identity?.Name</strong> </a>
+        <a  class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Inloggad som: <strong>@displayName</strong></a>
     </li>
     <li class="nav-item">
         <form  class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
