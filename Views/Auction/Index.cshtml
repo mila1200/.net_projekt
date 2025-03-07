@@ -1,4 +1,6 @@
+@using Microsoft.AspNetCore.Identity
 @model IEnumerable<CardHaven.Models.AuctionModel>
+@inject UserManager<ApplicationUserModel> UserManager
 
 @{
     ViewData["Title"] = "Mina auktioner";
@@ -10,42 +12,51 @@
     <div class="card">
         @foreach (var auction in Model)
         {
+            //hämta högst bud och användare
+            var highestBid = auction.Bids.OrderByDescending(b => b.Amount).FirstOrDefault();
+            var currentUser = await UserManager.GetUserAsync(User);
+
+            @if (!auction.IsClosed && auction.EndTime > DateTime.Now)
+            {
+                <img src="@Url.Content("~/images/" + auction.ImageName)" class="card-img-top" loading="lazy"
+                    alt="@auction.Name">
+            }
+            else
+            {
+                <img src="@Url.Content("~/images/" + auction.ImageName)" class="card-img-top" loading="lazy" alt="@auction.Name"
+                    style="opacity: 0.5;">
+            }
+            <div class="card-body">
+                <h5 class="card-title">@auction.Name</h5>
+                <p class="card-text"><strong>Set:</strong> @auction.Set </p>
+                <p class="card-text"><strong>Beskrivning:</strong> @auction.Description</p>
+                <p class="card-text"><strong>Skick:</strong> @auction.Condition</p>
+                <p class="card-text"><strong>Slutar:</strong> @auction.EndTime.ToString("g")</p>
+                <p class="card-text"><strong>Nuvarande bud:</strong> @auction.AskingPrice tokens</p>
                 @if (!auction.IsClosed && auction.EndTime > DateTime.Now)
+                {
+                    @if (!auction.Bids.Any())
                     {
-                         <img src="@Url.Content("~/images/" + auction.ImageName)" class="card-img-top" loading="lazy" alt="@auction.Name">
+                        <a asp-action="Edit" asp-route-id="@auction.Id" class="btn btn-primary">Redigera</a>
+                        <a asp-action="Delete" asp-route-id="@auction.Id" class="btn btn-danger">Radera</a>
                     }
                     else
                     {
-                        <img src="@Url.Content("~/images/" + auction.ImageName)" class="card-img-top" loading="lazy" alt="@auction.Name" style="opacity: 0.5;">
+                        <span class="text-danger">Kan ej redigeras eller raderas - bud finns</span>
                     }
-                <div class="card-body">
-                    <h5 class="card-title">@auction.Name</h5>
-                    <p class="card-text"><strong>Set:</strong> @auction.Set </p>
-                    <p class="card-text"><strong>Beskrivning:</strong> @auction.Description</p>
-                    <p class="card-text"><strong>Skick:</strong> @auction.Condition</p>
-                    <p class="card-text"><strong>Slutar:</strong> @auction.EndTime.ToString("g")</p>
-                    <p class="card-text"><strong>Nuvarande bud:</strong> @auction.AskingPrice tokens</p>
-                    @if (!auction.IsClosed && auction.EndTime > DateTime.Now)
+                }
+                else
+                {
+                    @if (highestBid != null && currentUser != null && highestBid.UserId == currentUser.Id)
                     {
-                        @if(!auction.Bids.Any())
-                        {
-                        <a asp-action="Edit" asp-route-id="@auction.Id" class="btn btn-primary">Redigera</a>
-                        <a asp-action="Delete" asp-route-id="@auction.Id" class="btn btn-danger">Radera</a>
-                        }
-                        else
-                        {
-                            <span class="text-danger">Kan ej redigeras eller raderas - bud finns</span>
-                        }
+                        <span class="text-success">Grattis! Du vann auktionen.</span>
                     }
                     else
                     {
                         <span class="text-danger">Auktionen är avslutad</span>
                     }
-                    
-                </div>
-            
-
-
+                }
+            </div>
         }
     </div>
 </div>
