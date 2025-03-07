@@ -47,6 +47,7 @@ namespace CardHaven.Areas.Identity.Pages.Account
             /// </summary>
             [Required]
             [EmailAddress]
+            [Display(Name = "E-postadress")]
             public string Email { get; set; }
         }
 
