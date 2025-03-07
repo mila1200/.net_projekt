@@ -21,7 +21,7 @@
         }
         <p><strong>Säljare:</strong> @Model.Seller</p>
         <hr />
-        <p><strong>Aktuellt bud:</strong> @Model.AskingPrice tokens</p>
+        <p><strong>Aktuellt bud:</strong> @Model.AskingPrice kronor</p>
         <p><strong>Avslutas:</strong> @Model.EndTime</p>
     </div>
     <section>
@@ -40,10 +40,10 @@
                 @foreach (var bid in Model.Bids.OrderByDescending(bids => bids.PlacedAt))
                 {
                     <tr>
-                        <td>@bid.Amount tokens</td>
+                        <td>@bid.Amount kronor</td>
                         @if (bid.User != null)
                         {
-                            <td>@bid.User.UserName</td>
+                            <td>@bid.User.DisplayName</td>
                         }
                         else
                         {
@@ -75,7 +75,7 @@
         <form asp-controller="Bid" asp-action="Create" method="post">
             <input type="hidden" name="AuctionId" value="@Model.Id" />
             <div class="form-group">
-                <label for="Amount">Antal tokens:</label>
+                <label for="Amount">Antal kronor:</label>
                 <input type="number" class="form-control" name="Amount" id="amount" required />
             </div>
             <button type="submit" class="btn btn-success">Lägg bud</button>

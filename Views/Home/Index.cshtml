@@ -2,7 +2,9 @@
 @{
     ViewData["Title"] = "Start";
 }
-
+<div>
+<img src="~/images/pokemoncards1920x646.webp" alt="Pokemonkort" loading="lazy" style="max-width: 1920px; max-height: 646;">
+</div>
 <h1 class="display-4">Sveriges största auktionssajt för samlarkort</h1>
 <h2>Pokémonkort</h2>
 
@@ -20,16 +22,16 @@
                 <div>
                     @if (!auction.IsClosed && auction.EndTime > DateTime.Now)
                     {
-                        <img src="@Url.Content("~/images/" + auction.ImageName)" loading="lazy" alt="@auction.ImageName">
+                        <img src="@Url.Content("~/images/" + auction.ImageName)" loading="lazy" alt="@auction.Name">
                     }
                     else
                     {
-                        <img src="@Url.Content("~/images/" + auction.ImageName)" loading="lazy" alt="@auction.ImageName" style="opacity: 0.5;">
+                        <img src="@Url.Content("~/images/" + auction.ImageName)" loading="lazy" alt="@auction.Name" style="opacity: 0.5;">
                     }
                     <h3><strong>@auction.Name</strong></h3>
                     <p>Set: @auction.Set</p>
                     <p>Slutar: @auction.EndTime</p>
-                    <p>Nuvarande bud: <strong>@auction.AskingPrice</strong> tokens</p>
+                    <p>Nuvarande bud: <strong>@auction.AskingPrice</strong> kronor</p>
                     @if (!auction.IsClosed && auction.EndTime > DateTime.Now)
                     {
                         <a asp-controller="Auction" asp-action="Details" asp-route-id="@auction.Id" class="btn btn-success">Lägg bud</a>

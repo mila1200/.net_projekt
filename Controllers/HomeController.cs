@@ -45,4 +45,11 @@ public class HomeController : Controller
     {
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
+
+    //för aboutsidan i footer, ändrar sökvägen
+    [Route("About")]
+    public IActionResult About()
+    {
+        return View();
+    }
 }

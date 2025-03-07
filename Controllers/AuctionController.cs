@@ -60,7 +60,7 @@ namespace CardHaven.Controllers
                 .Include(a => a.Bids)
                 .ThenInclude(b => b.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            
+
             if (auctionModel == null)
             {
                 return NotFound();
@@ -85,7 +85,7 @@ namespace CardHaven.Controllers
         {
             var user = await _userManager.GetUserAsync(User);
 
-            if(user == null)
+            if (user == null)
             {
                 return RedirectToAction("Index", "Home");
             }
@@ -101,7 +101,7 @@ namespace CardHaven.Controllers
             DateTime maxEndTime = DateTime.Now.AddDays(7);
 
             //kontroll av tidsintervall
-            if(auctionModel.EndTime < minEndTime || auctionModel.EndTime > maxEndTime)
+            if (auctionModel.EndTime < minEndTime || auctionModel.EndTime > maxEndTime)
             {
                 ModelState.AddModelError("EndTime", "Sluttiden måste vara mellan 1 dag och 7 dagar framåt");
             }
@@ -181,7 +181,7 @@ namespace CardHaven.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Set,Description,Condition,ImageName,SellerId,AskingPrice,StartTime,EndTime")] AuctionModel auctionModel)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Set,Description,Condition,ImageName,SellerId,AskingPrice,StartTime,EndTime,ImageFile")] AuctionModel auctionModel)
         {
             if (id != auctionModel.Id)
             {
@@ -192,6 +192,56 @@ namespace CardHaven.Controllers
             {
                 try
                 {
+                    // Om ingen ny bild är vald, behåll den gamla bilden
+                    if (auctionModel.ImageFile == null)
+                    {
+                        // AsNotracking för att unvika spårning av två objekt. För att undvika felmeddelande
+                        var existingAuction = await _context.Auctions.AsNoTracking().FirstOrDefaultAsync(a => a.Id == id);
+                        if (existingAuction != null)
+                        {   //behåll gamla bilden
+                            auctionModel.ImageName = existingAuction.ImageName; 
+                        }
+                    }
+                    else
+                    {
+                        // Skapa sökvägar för originalbild och webp
+                        string fileName = Path.GetFileNameWithoutExtension(auctionModel.ImageFile.FileName).Replace(" ", String.Empty);
+                        string extension = Path.GetExtension(auctionModel.ImageFile.FileName);
+
+                        // Tidsstämpel
+                        string timestamp = DateTime.Now.ToString("yymmssfff");
+
+                        // Skapa filnamn för originalbild och webp
+                        string originalFileName = fileName + timestamp + extension;
+                        string webpFileName = fileName + timestamp + ".webp";
+
+                        string originalPath = Path.Combine(_hostEnvironment.WebRootPath, "images", originalFileName);
+                        string webpPath = Path.Combine(_hostEnvironment.WebRootPath, "images", webpFileName);
+
+                        // Spara originalbilden
+                        using (var fileStream = new FileStream(originalPath, FileMode.Create))
+                        {
+                            await auctionModel.ImageFile.CopyToAsync(fileStream);
+                        }
+
+                        // Konvertera och spara WebP
+                        using (var image = Image.Load(auctionModel.ImageFile.OpenReadStream()))
+                        {
+                            image.Mutate(x => x.Resize(new ResizeOptions
+                            {
+                                Mode = ResizeMode.Max,
+                                Size = new Size(800, 600)
+                            }));
+
+                            // Kvalitet 80 för webp
+                            await image.SaveAsync(webpPath, new WebpEncoder() { Quality = 80 });
+                        }
+
+                        // Uppdatera ImageName till webp-filnamnet
+                        auctionModel.ImageName = webpFileName;
+                    }
+
+                    // Uppdatera auktionen i databasen
                     _context.Update(auctionModel);
                     await _context.SaveChangesAsync();
                 }
@@ -208,6 +258,7 @@ namespace CardHaven.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+
             ViewData["SellerId"] = new SelectList(_context.Users, "Id", "Id", auctionModel.SellerId);
             return View(auctionModel);
         }
@@ -255,12 +306,12 @@ namespace CardHaven.Controllers
         public async Task<IActionResult> UserAuctions()
         {
             var user = await _userManager.GetUserAsync(User);
-            
+
             if (user == null)
             {
                 RedirectToAction("Login", "Account");
             }
-            
+
             var myAuctions = _context.Auctions.Where(auction => auction.SellerId == user.Id).ToList();
             return View(myAuctions);
         }

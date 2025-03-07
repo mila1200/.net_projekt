@@ -32,7 +32,7 @@
                 <p class="card-text"><strong>Beskrivning:</strong> @auction.Description</p>
                 <p class="card-text"><strong>Skick:</strong> @auction.Condition</p>
                 <p class="card-text"><strong>Slutar:</strong> @auction.EndTime.ToString("g")</p>
-                <p class="card-text"><strong>Nuvarande bud:</strong> @auction.AskingPrice tokens</p>
+                <p class="card-text"><strong>Nuvarande bud:</strong> @auction.AskingPrice kronor</p>
                 @if (!auction.IsClosed && auction.EndTime > DateTime.Now)
                 {
                     @if (!auction.Bids.Any())
