@@ -22,7 +22,7 @@ public class HomeController : Controller
     {   
         //plocka in info om korten för att kunna skriva ut den infon
         var auctions = await _context.Auctions
-        .OrderByDescending(a => a.EndTime)
+        .OrderBy(a => a.EndTime)
         .ToListAsync();
 
         //om tiden gått ut ändras isClosed till true
