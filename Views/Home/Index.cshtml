@@ -2,47 +2,62 @@
 @{
     ViewData["Title"] = "Start";
 }
-<div>
-<img src="~/images/pokemoncards1920x646.webp" alt="Pokemonkort" loading="lazy" style="max-width: 1920px; max-height: 646;">
+<div class="popup-text-container">
+    <p class="popup-text">Ingen annonsavgift på första auktionen!</p>
 </div>
-<h1 class="display-4">Sveriges största auktionssajt för samlarkort</h1>
-<h2>Pokémonkort</h2>
+<div class="text-center">
+    <img id="banner-image" src="~/images/pokemoncards1920x646.webp" alt="Pokemonkort" loading="lazy"
+        class="img-fluid mx-auto d-block position-relative">
+</div>
+
+<h1 id="banner-text" class="position-absolute top-50 start-50 translate-middle text-white bg-black bg-opacity-50 px-3 py-2">Sveriges
+    största auktionssajt för samlarkort</h1>
+
 
 <!--Skriver ut auktionerna till skärmen. Om inga finns visas meddelande-->
-<div>
+<div class="container">
+    <h2 class="px-3 py-3">Utforska våra auktioner</h2>
     <article>
-        @if (Model == null || !Model.Any())
-        {
+@if (Model == null || !Model.Any())
+{
             <p>Inga auktioner tillgängliga...</p>
-        }
-        else
-        {
-            @foreach (var auction in Model)
-            {
-                <div>
-                    @if (!auction.IsClosed && auction.EndTime > DateTime.Now)
-                    {
-                        <img src="@Url.Content("~/images/" + auction.ImageName)" loading="lazy" alt="@auction.Name">
-                    }
-                    else
-                    {
-                        <img src="@Url.Content("~/images/" + auction.ImageName)" loading="lazy" alt="@auction.Name" style="opacity: 0.5;">
-                    }
-                    <h3><strong>@auction.Name</strong></h3>
-                    <p>Set: @auction.Set</p>
-                    <p>Slutar: @auction.EndTime</p>
-                    <p>Nuvarande bud: <strong>@auction.AskingPrice</strong> kronor</p>
-                    @if (!auction.IsClosed && auction.EndTime > DateTime.Now)
-                    {
-                        <a asp-controller="Auction" asp-action="Details" asp-route-id="@auction.Id" class="btn btn-success">Lägg bud</a>
-                    }
-                    else
-                    {
-                        <span class="text-danger">Auktionen är avslutad</span>
-                    }
-                  
+}
+else
+{
+            <div class="row">
+                @foreach (var auction in Model)
+                {
+                    <div class="col-md-4 mb-4">
+                    <div class="card">
+                        @if (!auction.IsClosed && auction.EndTime > DateTime.Now)
+                        {
+                            <img class="card-img-top" src="@Url.Content("~/images/" + auction.ImageName)" loading="lazy"
+                                alt="@auction.Name">
+                        }
+                        else
+                        {
+                            <img class="card-img-top" src="@Url.Content("~/images/" + auction.ImageName)" loading="lazy"
+                                alt="@auction.Name" style="opacity: 0.5;">
+                        }
+                        <div class="card-body">
+                            <h3 class="card-title"><strong>@auction.Name</strong></h3>
+                            <p class="card-text">Set: @auction.Set</p>
+                            <p class="card-text">Slutar: @auction.EndTime</p>
+                            <p class="card-text">Nuvarande bud: <strong>@auction.AskingPrice</strong> kronor</p>
+                            @if (!auction.IsClosed && auction.EndTime > DateTime.Now)
+                            {
+                                <a asp-controller="Auction" asp-action="Details" asp-route-id="@auction.Id"
+                                    class="btn btn-success">Lägg bud</a>
+                            }
+                            else
+                            {
+                                <span class="text-danger">Auktionen är avslutad</span>
+                            }
+                        </div>
+                    </div>
+                    </div>
+                }
                 </div>
-            }
-        }
+}
     </article>
-</div>
+    </div>

@@ -65,7 +65,7 @@ namespace CardHaven.Areas.Identity.Pages.Account
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [Required]
+            [Required(ErrorMessage = "Du måste ange en korrekt e-postadress")]
             [EmailAddress]
             [Display(Name = "E-post")]
             public string Email { get; set; }
@@ -74,7 +74,7 @@ namespace CardHaven.Areas.Identity.Pages.Account
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [Required]
+            [Required(ErrorMessage = "Du måste ange ett lösenord")]
             [DataType(DataType.Password)]
             [Display(Name = "Lösenord")]
             public string Password { get; set; }

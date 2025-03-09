@@ -1,4 +1,62 @@
-.auctionImages {
-    max-width: 300px;
-    max-height: auto;
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+    background-color: #1b6ec2;
+    border-color: #1861ac;
+  }
+
+  .nav-link.active {
+    color: #fff !important;
+  }
+
+  .navbar-brand p {
+    margin-bottom: 0;
+  }
+
+  #banner-image {
+    max-width: 1920px;
+    max-height: 646px;
+  }
+
+  .popup-text-container {
+    width: 100%;
+    height: 100px;
+    background: linear-gradient(to right,#003366, #2575fc);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.popup-text {
+    font-size: 1rem; 
+    color: white;
+    transform: scale(1) translateY(10px);
+    transition: opacity 0.3s ease, transform 0.3s ease, font-size 0.3s ease;
+}
+
+.popup-text-container:hover .popup-text {
+    transform: scale(1.2) translateY(0); 
+    font-size: 1.5rem;
+}
+
+.card-img-top {
+  height: 500px;
+  width: 100%;
+  object-fit: cover;
+}
+
+footer {
+  height: 50px;
+  box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #f8f9fa;
+}
+
+@media (max-width: 800px) {
+  .popup-text-container {
+    display: none;
+  }
+
+  #banner-text {
+    display:none;
+  }
 }

@@ -2,34 +2,37 @@
 @inject SignInManager<ApplicationUserModel> SignInManager
 @inject UserManager<ApplicationUserModel> UserManager
 
-<ul class="navbar-nav">
-
+<ul class="nav ms-auto align-items-center nav-pills">
 
 @if (SignInManager.IsSignedIn(User))
 {
-    //hämtar användarnamn
     var user = await UserManager.GetUserAsync(User);
     var displayName = user?.DisplayName ?? "Okänd användare";
     
     <li class="nav-item">
-        <a  class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Inloggad som: <strong>@displayName</strong></a>
+        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
+            <i class="bi bi-person-circle" style="font-size: 1.5rem;"></i> Inloggad som: <strong>@displayName</strong>
+        </a>
     </li>
     <li class="nav-item">
-        <form  class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-            <button  type="submit" class="nav-link btn btn-link text-dark">Logout</button>
-            <i class="bi bi-door-closed"></i>
+        <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+            <button type="submit" class="nav-link btn btn-link text-dark fs-5">
+                <i class="bi bi-door-closed" style="font-size: 1.5rem;"></i> Logga ut
+            </button>
         </form>
     </li>
 }
 else
 {
     <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Skapa konto</a>
-        <i class="bi bi-person-plus"></i>
+        <a class="nav-link text-dark fs-5 @(ViewData["Title"]?.ToString() == "Registrera" ? "active" : "")" asp-area="Identity" asp-page="/Account/Register">
+            <i class="bi bi-person-plus" style="font-size: 1.5rem;"></i> Skapa konto
+        </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Logga in</a>
-        <i class="bi bi-door-open"></i>
+        <a class="nav-link text-dark fs-5 @(ViewData["Title"]?.ToString() == "Logga in" ? "active" : "")" asp-area="Identity" asp-page="/Account/Login">
+            <i class="bi bi-door-open" style="font-size: 1.5rem;"></i> Logga in
+        </a>
     </li>
 }
 </ul>
