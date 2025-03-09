@@ -3,32 +3,30 @@
 @{
     ViewData["Title"] = "Ny auktion";
 }
-
-<h1>Sälja</h1>
-<h2>Skapa ny auktion</h2>
+<div class="container-fluid w-50">
+    <h1 class="py-3 px-3">Sälja</h1>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Set" class="control-label"></label>
-                <input asp-for="Set" class="form-control" />
-                <span asp-validation-for="Set" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <textarea asp-for="Description" class="form-control"></textarea>
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Condition" class="control-label"></label>
-                <select asp-for="Condition" class="form-control">
+<h2>Skapa ny auktion</h2>
+    <form asp-action="Create" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="Name" class="control-label"></label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Set" class="control-label"></label>
+            <input asp-for="Set" class="form-control" />
+            <span asp-validation-for="Set" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Description" class="control-label"></label>
+            <textarea asp-for="Description" class="form-control"></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Condition" class="control-label"></label>
+            <select asp-for="Condition" class="form-control">
                 <option value="Mint">Mint</option>
                 <option value="Near Mint">Near Mint</option>
                 <option value="Excellent">Excellent</option>
@@ -37,32 +35,33 @@
                 <option value="Played">Played</option>
                 <option value="Poor">Poor</option>
                 <option value="Ej Bedömd">Ej Bedömd</option>
-                </select>
-                <span asp-validation-for="Condition" class="text-danger"></span>
-            </div>
-            <!--accept image/* tar emot vilken typ av fil som helst-->
-            <div class="form-group">
-                <label asp-for="ImageFile" class="control-label"></label>
-                <input asp-for="ImageFile" class="form-control" accept="image/*" />
-                <span asp-validation-for="ImageFile" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="AskingPrice" class="control-label"></label>
-                <input asp-for="AskingPrice" class="form-control" />
-                <span asp-validation-for="AskingPrice" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="EndTime" class="control-label"></label>
-                <input asp-for="EndTime" class="form-control" />
-                <span asp-validation-for="EndTime" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Publicera" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
+            </select>
+            <span asp-validation-for="Condition" class="text-danger"></span>
+        </div>
+        <!--accept image/* tar emot vilken typ av fil som helst-->
+        <div class="form-group">
+            <label asp-for="ImageFile" class="control-label"></label>
+            <input asp-for="ImageFile" class="form-control" accept="image/*" />
+            <span asp-validation-for="ImageFile" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="AskingPrice" class="control-label"></label>
+            <input asp-for="AskingPrice" class="form-control" />
+            <span asp-validation-for="AskingPrice" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="EndTime" class="control-label"></label>
+            <input asp-for="EndTime" class="form-control" />
+            <span asp-validation-for="EndTime" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Publicera" class="btn btn-primary my-3 mx-3" />
+        </div>
+    </form>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

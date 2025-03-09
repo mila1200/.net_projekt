@@ -4,31 +4,34 @@
     ViewData["Title"] = "Mina Bud";
 }
 
-<h1 class="py-3 px-3">Mina Bud</h1>
+<div class="container">
+    <h1 class="py-3 px-3">Mina Bud</h1>
 
-<div class="row">
-    @if (!Model.Any())
-    {
-        <p>Du har inte budat på några auktioner ännu...</p>
-    }
-    else
-    {
-        @foreach (var bid in Model)
+    <div class="row d-flex justify-content-center flex-wrap">
+        @if (!Model.Any())
         {
-            <div class="col-12 col-sm-6 col-md-4 mb-4">
-                <div class="card">
-                    <a asp-controller="Auction" asp-action="Details" asp-route-id="@bid.Auction.Id" class="text-decoration-none text-dark">
-                        <img src="@Url.Content("~/images/" + bid.Auction.ImageName)" class="card-img-top" loading="lazy" alt="@bid.Auction.Name">
-                        <div class="card-body">
-                            <h5 class="card-title">@bid.Auction.Name</h5>
-                            <p class="card-text"><strong>Set:</strong> @bid.Auction.Set</p>
-                            <p class="card-text"><strong>Slutar:</strong> @bid.Auction.EndTime.ToString("g")</p>
-                            <p class="card-text"><strong>Nuvarande bud:</strong> @bid.Auction.AskingPrice kronor</p>
-                            <p class="card-text"><strong>Mitt bud:</strong> @bid.Amount kronor</p>
-                        </div>
-                    </a>
-                </div>
-            </div>
+            <p>Du har inte budat på några auktioner ännu...</p>
         }
-    }
+        else
+        {
+            @foreach (var bid in Model)
+            {
+                
+                    <div class="card m-2">
+                        <a asp-controller="Auction" asp-action="Details" asp-route-id="@bid.Auction.Id"
+                            class="text-decoration-none text-dark">
+                            <img src="@Url.Content("~/images/" + bid.Auction.ImageName)" class="card-img-top" loading="lazy"
+                                alt="@bid.Auction.Name">
+                            <div class="card-body">
+                                <h5 class="card-title">@bid.Auction.Name</h5>
+                                <p class="card-text"><strong>Set:</strong> @bid.Auction.Set</p>
+                                <p class="card-text"><strong>Slutar:</strong> @bid.Auction.EndTime.ToString("g")</p>
+                                <p class="card-text"><strong>Nuvarande bud:</strong> @bid.Auction.AskingPrice kronor</p>
+                                <p class="card-text"><strong>Mitt bud:</strong> @bid.Amount kronor</p>
+                            </div>
+                        </a>
+                    </div>
+            }
+        }
+    </div>
 </div>

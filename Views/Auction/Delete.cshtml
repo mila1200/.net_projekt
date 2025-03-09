@@ -3,45 +3,46 @@
 @{
     ViewData["Title"] = "Radera";
 }
+<div class="container-fluid w-50">
+    <h1 class="py-3 px-3">Radera</h1>
+    <hr />
+    <h2>Är du säker på att du vill radera auktionen?</h2>
+    <div class="row">
+        <dd class="col-sm-10">
+            @if (!string.IsNullOrEmpty(Model.ImageName))
+            {
+                <img src="~/images/@Model.ImageName" alt="@Model.Name" class="img-fluid" />
+            }
+            else
+            {
+                <span>Ingen bild tillgänglig</span>
+            }
+    </div>
+    <div>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.EndTime)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.EndTime)
+        </dd>
+        </dl>
 
-<h1>Radera</h1>
-<h2>Är du säker på att du vill radera auktionen?</h2>
-<hr />
-<div class="row">
-    <dd class="col-sm-10">
-        @if (!string.IsNullOrEmpty(Model.ImageName))
-        {
-            <img src="~/images/@Model.ImageName" alt="@Model.Name" class="img-fluid" />
-        }
-        else
-        {
-            <span>Ingen bild tillgänglig</span>
-        }
-</div>
-<div>
-    <dt class="col-sm-2">
-        @Html.DisplayNameFor(model => model.Name)
-    </dt>
-    <dd class="col-sm-10">
-        @Html.DisplayFor(model => model.Name)
-    </dd>
-    <dt class="col-sm-2">
-        @Html.DisplayNameFor(model => model.Description)
-    </dt>
-    <dd class="col-sm-10">
-        @Html.DisplayFor(model => model.Description)
-    </dd>
-    <dt class="col-sm-2">
-        @Html.DisplayNameFor(model => model.EndTime)
-    </dt>
-    <dd class="col-sm-10">
-        @Html.DisplayFor(model => model.EndTime)
-    </dd>
-    </dl>
-
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Radera" class="btn btn-danger" /> |
-        <a asp-action="Index">Ångra</a>
-    </form>
+        <form asp-action="Delete" class="">
+            <input type="hidden" asp-for="Id" />
+            <input type="submit" value="Radera" class="btn btn-danger my-3 mx-3" />
+            <a asp-action="Index">Ångra</a>
+        </form>
+    </div>
 </div>

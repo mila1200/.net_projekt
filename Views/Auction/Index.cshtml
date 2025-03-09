@@ -5,58 +5,63 @@
 @{
     ViewData["Title"] = "Mina auktioner";
 }
+<div class="container">
+    <h1 class="py-3 px-3">Mina auktioner</h1>
 
-<h1>Mina auktioner</h1>
+    <div class="row d-flex justify-content-center flex-wrap">
 
-<div class="col-md-4 mb-4">
-    <div class="card">
         @foreach (var auction in Model)
         {
+
             //hämta högst bud och användare
             var highestBid = auction.Bids.OrderByDescending(b => b.Amount).FirstOrDefault();
             var currentUser = await UserManager.GetUserAsync(User);
 
-            @if (!auction.IsClosed && auction.EndTime > DateTime.Now)
-            {
-                <img src="@Url.Content("~/images/" + auction.ImageName)" class="card-img-top" loading="lazy"
-                    alt="@auction.Name">
-            }
-            else
-            {
-                <img src="@Url.Content("~/images/" + auction.ImageName)" class="card-img-top" loading="lazy" alt="@auction.Name"
-                    style="opacity: 0.5;">
-            }
-            <div class="card-body">
-                <h5 class="card-title">@auction.Name</h5>
-                <p class="card-text"><strong>Set:</strong> @auction.Set </p>
-                <p class="card-text"><strong>Beskrivning:</strong> @auction.Description</p>
-                <p class="card-text"><strong>Skick:</strong> @auction.Condition</p>
-                <p class="card-text"><strong>Slutar:</strong> @auction.EndTime.ToString("g")</p>
-                <p class="card-text"><strong>Nuvarande bud:</strong> @auction.AskingPrice kronor</p>
+            <div class="card h-100 mt-0">
                 @if (!auction.IsClosed && auction.EndTime > DateTime.Now)
                 {
-                    @if (!auction.Bids.Any())
-                    {
-                        <a asp-action="Edit" asp-route-id="@auction.Id" class="btn btn-primary">Redigera</a>
-                        <a asp-action="Delete" asp-route-id="@auction.Id" class="btn btn-danger">Radera</a>
-                    }
-                    else
-                    {
-                        <span class="text-danger">Kan ej redigeras eller raderas - bud finns</span>
-                    }
+                    <img src="@Url.Content("~/images/" + auction.ImageName)" class="card-img-top" loading="lazy"
+                        alt="@auction.Name">
                 }
                 else
                 {
-                    @if (highestBid != null && currentUser != null && highestBid.UserId == currentUser.Id)
+                    <img src="@Url.Content("~/images/" + auction.ImageName)" class="card-img-top" loading="lazy"
+                        alt="@auction.Name" style="opacity: 0.5;">
+                }
+                <div class="card-body">
+                    <h5 class="card-title">@auction.Name</h5>
+                    <p class="card-text"><strong>Set:</strong> @auction.Set </p>
+                    <p class="card-text"><strong>Beskrivning:</strong> @auction.Description</p>
+                    <p class="card-text"><strong>Skick:</strong> @auction.Condition</p>
+                    <p class="card-text"><strong>Slutar:</strong> @auction.EndTime.ToString("g")</p>
+                    <p class="card-text"><strong>Nuvarande bud:</strong> @auction.AskingPrice kronor</p>
+                    @if (!auction.IsClosed && auction.EndTime > DateTime.Now)
                     {
-                        <span class="text-success">Grattis! Du vann auktionen.</span>
+                        @if (!auction.Bids.Any())
+                        {
+                            <a asp-action="Edit" asp-route-id="@auction.Id" class="btn btn-primary">Redigera</a>
+                            <a asp-action="Delete" asp-route-id="@auction.Id" class="btn btn-danger">Radera</a>
+                        }
+                        else
+                        {
+                            <span class="text-danger">Kan ej redigeras eller raderas - bud finns</span>
+                        }
                     }
                     else
                     {
-                        <span class="text-danger">Auktionen är avslutad</span>
+                        @if (highestBid != null && currentUser != null && highestBid.UserId == currentUser.Id)
+                        {
+                            <span class="text-success">Grattis! Du vann auktionen.</span>
+                        }
+                        else
+                        {
+                            <span class="text-danger">Auktionen är avslutad</span>
+                        }
                     }
-                }
+                </div>
+
             </div>
         }
     </div>
+
 </div>

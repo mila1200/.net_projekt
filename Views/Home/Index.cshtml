@@ -18,17 +18,16 @@
 <div class="container">
     <h2 class="px-3 py-3">Utforska våra auktioner</h2>
     <article>
-@if (Model == null || !Model.Any())
-{
+        <div class="row d-flex justify-content-center">
+        @if (Model == null || !Model.Any())
+        {
             <p>Inga auktioner tillgängliga...</p>
-}
-else
-{
-            <div class="row">
+        }
+        else
+        {
                 @foreach (var auction in Model)
                 {
-                    <div class="col-md-4 mb-4">
-                    <div class="card">
+                    <div class="card mx-6">
                         @if (!auction.IsClosed && auction.EndTime > DateTime.Now)
                         {
                             <img class="card-img-top" src="@Url.Content("~/images/" + auction.ImageName)" loading="lazy"
@@ -47,7 +46,7 @@ else
                             @if (!auction.IsClosed && auction.EndTime > DateTime.Now)
                             {
                                 <a asp-controller="Auction" asp-action="Details" asp-route-id="@auction.Id"
-                                    class="btn btn-success">Lägg bud</a>
+                                    class="btn btn-success mt-auto">Lägg bud</a>
                             }
                             else
                             {
@@ -55,9 +54,9 @@ else
                             }
                         </div>
                     </div>
-                    </div>
                 }
-                </div>
-}
+                
+            }
+            </div>
     </article>
     </div>

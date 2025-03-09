@@ -4,82 +4,96 @@
     ViewData["Title"] = "Lägg bud";
 }
 
-<div>
-    <h1>@Model.Name</h1>
+<div class="container-fluid">
+    <h1 class="py-3 px-3 mx-auto w-75">@Model.Name</h1>
     <hr />
-    <div>
-        <img src="@Url.Content("~/images/" + Model.ImageName)" loading="lazy" alt="">
-        <p><strong>Set:</strong> @Model.Set</p>
-        <p><strong>Beskrivning:</strong> @Model.Description</p>
-        @if (Model.Condition != null)
-        {
-            <p><strong>Skick:</strong> @Model.Condition</p>
-        }
-        else
-        {
-            <p><strong>Skick:</strong> <em>Saknas uppgifter</em></p>
-        }
-        <p><strong>Säljare:</strong> @Model.Seller</p>
-        <hr />
-        <p><strong>Aktuellt bud:</strong> @Model.AskingPrice kronor</p>
-        <p><strong>Avslutas:</strong> @Model.EndTime</p>
+    <div class="row">
+        <div class="col-12 col-md-6 d-flex flex-column align-items-center justify-content-center">
+
+            <img src="@Url.Content("~/images/" + Model.ImageName)" class="img-fluid" loading="lazy" alt="@Model.Name"
+                id="offer-img">
+            <div class="text-left">
+                <p><strong>Set:</strong> @Model.Set</p>
+                <p><strong>Beskrivning:</strong> @Model.Description</p>
+                @if (Model.Condition != null)
+                {
+                    <p><strong>Skick:</strong> @Model.Condition</p>
+                }
+                else
+                {
+                    <p><strong>Skick:</strong> <em>Saknas uppgifter</em></p>
+                }
+                <p><strong>Säljare:</strong> @Model.Seller</p>
+                <hr />
+                <p><strong>Aktuellt bud:</strong> @Model.AskingPrice kronor</p>
+                <p><strong>Avslutas:</strong> @Model.EndTime</p>
+                <hr />
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6">
+            <div class="border border-primary w-75 p-5" id="bid">
+                <h2>Lägg ett bud</h2>
+                <p class="text-muted fs-4">Aktuellt bud: @Model.AskingPrice kronor</p>
+                <!--Felmeddelande om för lågt bud, successmeddelande om lyckat bud.-->
+                @if (TempData["ErrorMessage"] != null)
+                {
+                    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+                }
+                @if (TempData["SuccessMessage"] != null)
+                {
+                    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+                }
+
+                <form asp-controller="Bid" asp-action="Create" method="post">
+                    <input type="hidden" name="AuctionId" value="@Model.Id" />
+                    <div class="form-group">
+                        <label for="Amount">Antal kronor:</label>
+                        <input type="number" class="form-control" name="Amount" id="amount" required />
+                    </div>
+                    <button type="submit" class="btn btn-success m-3">Lägg bud</button>
+                </form>
+                <a asp-controller="Home" asp-action="Index">Tillbaka till auktioner</a>
+
+            </div>
+        </div>
     </div>
     <section>
-        <h2>Budhistorik</h2>
+        <h2 class="w-75 mx-auto">Budhistorik</h2>
         @if (Model.Bids.Any())
         {
-            <thead>
-                <tr>
-                    <th>Belopp</th>
-                    <th>Budgivare</th>
-                    <th>Tid</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!--loopa igenom bud och organisera dem id fallande ordning-->
-                @foreach (var bid in Model.Bids.OrderByDescending(bids => bids.PlacedAt))
-                {
+            <table class="table w-75 mx-auto">
+                <thead>
                     <tr>
-                        <td>@bid.Amount kronor</td>
-                        @if (bid.User != null)
-                        {
-                            <td>@bid.User.DisplayName</td>
-                        }
-                        else
-                        {
-                            <td>Användare okänd...</td>
-                        }
-                        <td>@bid.PlacedAt</td>
+                        <th>Belopp</th>
+                        <th>Budgivare</th>
+                        <th>Tid</th>
                     </tr>
-                }
-            </tbody>
+                </thead>
+                <tbody>
+                    <!--loopa igenom bud och organisera dem id fallande ordning-->
+                    @foreach (var bid in Model.Bids.OrderByDescending(bids => bids.PlacedAt))
+                    {
+                        <tr>
+                            <td>@bid.Amount kronor</td>
+                            @if (bid.User != null)
+                            {
+                                <td>@bid.User.DisplayName</td>
+                            }
+                            else
+                            {
+                                <td>Användare okänd...</td>
+                            }
+                            <td>@bid.PlacedAt</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
         }
         else
         {
-            <p><em>Bud saknas. Bli först med att lägga ett bud.</em></p>
+            <p class="w-75 mx-auto"><em>Bud saknas. Bli först med att lägga ett bud.</em></p>
         }
     </section>
-    <section>
-        <h2>Lägg ett bud</h2>
-        
-        <!--Felmeddelande om för lågt bud, successmeddelande om lyckat bud.-->
-            @if (TempData["ErrorMessage"] != null)
-            {
-                <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
-            }
-            @if (TempData["SuccessMessage"] != null)
-            {
-                <div class="alert alert-success">@TempData["SuccessMessage"]</div>
-            }
-        
-        <form asp-controller="Bid" asp-action="Create" method="post">
-            <input type="hidden" name="AuctionId" value="@Model.Id" />
-            <div class="form-group">
-                <label for="Amount">Antal kronor:</label>
-                <input type="number" class="form-control" name="Amount" id="amount" required />
-            </div>
-            <button type="submit" class="btn btn-success">Lägg bud</button>
-        </form>
-    </section>
-    <a asp-action="Index">Tillbaka till annonser</a>
+
 </div>

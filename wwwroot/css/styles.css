@@ -1,3 +1,13 @@
+html, body {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex-grow: 1;
+}
+
 .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
     background-color: #1b6ec2;
     border-color: #1861ac;
@@ -45,10 +55,27 @@
     font-size: 1.5rem;
 }
 
+.card {
+  max-width: 350px;
+  width: 100%;
+  margin: auto;
+  padding: 0;
+  border: none;
+}
+
 .card-img-top {
-  max-height: 500px;
+  height: 500px;
   width: 100%;
   object-fit: cover;
+}
+
+#offer-img {
+  width: 100%;
+  max-width: 350px;
+}
+
+#info {
+  width: 50%;
 }
 
 footer {
@@ -66,12 +93,26 @@ footer {
     flex-direction: column;
   }
 
+  .card-img-top {
+    max-height: 500px;
+    height: auto;
+  }
+
 }
 
 @media (max-width: 800px) {
   .popup-text-container {
     display: none;
   }
+}
+
+@media (max-width: 767px) {
+  #bid {
+    margin: 2% auto;
+  }
+  #info {
+      width: 100%;
+    }
 }
 
 
