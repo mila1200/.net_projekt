@@ -15,6 +15,7 @@
             <div class="text-left">
                 <p><strong>Set:</strong> @Model.Set</p>
                 <p><strong>Beskrivning:</strong> @Model.Description</p>
+                <!--hantera null-värden-->
                 @if (Model.Condition != null)
                 {
                     <p><strong>Skick:</strong> @Model.Condition</p>
@@ -49,7 +50,7 @@
                     <input type="hidden" name="AuctionId" value="@Model.Id" />
                     <div class="form-group">
                         <label for="Amount">Antal kronor:</label>
-                        <input type="number" class="form-control" name="Amount" id="amount" required />
+                        <input type="number" class="form-control" name="Amount" id="Amount" required />
                     </div>
                     <button type="submit" class="btn btn-success m-3">Lägg bud</button>
                 </form>
@@ -71,7 +72,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <!--loopa igenom bud och organisera dem id fallande ordning-->
+                    <!--loopa igenom bud och organisera dem i fallande ordning, annars Felmeddelande-->
                     @foreach (var bid in Model.Bids.OrderByDescending(bids => bids.PlacedAt))
                     {
                         <tr>

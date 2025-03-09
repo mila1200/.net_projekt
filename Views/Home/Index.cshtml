@@ -28,6 +28,7 @@
                 @foreach (var auction in Model)
                 {
                     <div class="card mx-6">
+                        <!--opacitet 50% Om auktionen avslutad-->
                         @if (!auction.IsClosed && auction.EndTime > DateTime.Now)
                         {
                             <img class="card-img-top" src="@Url.Content("~/images/" + auction.ImageName)" loading="lazy"

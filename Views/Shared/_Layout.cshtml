@@ -27,17 +27,20 @@
         <div class="navbar-collapse collapse" id="navbarSupportedContent">
             <ul class="nav flex-grow-1 d-flex justify-content-center align-items-center nav-pills" id="first-navbar">
                 <li class="nav-item">
+                    <!--Sätter active beroende på titel-->
                     <a class="nav-link text-dark fs-5 @(ViewData["Title"]?.ToString() == "Start" ? "active" : "")"
                        asp-area="" asp-controller="Home" asp-action="Index">
                         <i class="bi bi-house-door"></i>Start
                     </a>
                 </li>
                 <li class="nav-item">
+                    <!--Sätter active beroende på titel-->
                     <a class="nav-link text-dark fs-5 @(ViewData["Title"]?.ToString() == "Mina Bud" ? "active" : "")"
                        asp-area="" asp-controller="Bid" asp-action="Index">
                         <i class="bi bi-cart"></i> Mina bud
                     </a>
                 </li>
+                <!--Sätter active beroende på titel-->
                 <li class="nav-item">
                     <a class="nav-link text-dark fs-5 @(ViewData["Title"]?.ToString() == "Mina auktioner" ? "active" : "")"
                        asp-area="" asp-controller="Auction" asp-action="Index">
@@ -45,6 +48,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <!--Sätter active beroende på titel-->
                     <a class="nav-link text-dark fs-5 @(ViewData["Title"]?.ToString() == "Ny auktion" ? "active" : "")"
                        asp-area="" asp-controller="Auction" asp-action="Create">
                         <i class="bi bi-cash-coin"></i> Sälja

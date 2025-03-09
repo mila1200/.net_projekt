@@ -59,7 +59,7 @@ namespace CardHaven.Controllers
             {
                 return NotFound();
             }
-
+                
             var bidModel = await _context.Bids
                 .Include(b => b.Auction)
                 .Include(b => b.User)

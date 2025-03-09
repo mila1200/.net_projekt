@@ -82,6 +82,7 @@ footer {
   height: 50px;
   box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
   background-color: #f8f9fa;
+  margin-top: auto;
 }
 
 @media (max-width: 994px) {

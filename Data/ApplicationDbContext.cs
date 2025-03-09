@@ -11,6 +11,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUserModel>
     {
     }
 
+    //refererar till modellerna
     public DbSet<AuctionModel> Auctions { get; set; }
 
     public DbSet<BidModel> Bids { get; set; }
