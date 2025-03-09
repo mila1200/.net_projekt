@@ -11,8 +11,14 @@
     margin-bottom: 0;
   }
 
+  .bi {
+    font-size: 1.5rem;
+  }
+
   #banner-image {
-    max-width: 1920px;
+    width: 100%;
+    height: auto;
+    max-width: none;
     max-height: 646px;
   }
 
@@ -40,7 +46,7 @@
 }
 
 .card-img-top {
-  height: 500px;
+  max-height: 500px;
   width: 100%;
   object-fit: cover;
 }
@@ -51,12 +57,22 @@ footer {
   background-color: #f8f9fa;
 }
 
+@media (max-width: 994px) {
+  #banner-text {
+    display:none;
+  }
+
+  #first-navbar, #second-navbar {
+    flex-direction: column;
+  }
+
+}
+
 @media (max-width: 800px) {
   .popup-text-container {
     display: none;
   }
-
-  #banner-text {
-    display:none;
-  }
 }
+
+
+  

@@ -14,47 +14,51 @@
 
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom shadow-lg">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
-                    <img src="~/images/cardhaven.svg" alt="logo">
-                    <p>Card Haven</p>
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
-                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <!--Viewdata för hantering av .active-->
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between" id="navbarSupportedContent">
-                    <ul class="nav flex-grow-1 d-flex justify-content-center align-items-center nav-pills">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark fs-5 @(ViewData["Title"]?.ToString() == "Start" ? "active" : "")"
-                                asp-area="" asp-controller="Home" asp-action="Index">
-                                <i class="bi bi-house-door" style="font-size: 1.5rem;"></i>Start</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark fs-5 @(ViewData["Title"]?.ToString() == "Mina Bud" ? "active" : "")"
-                                asp-area="" asp-controller="Bid" asp-action="Index">
-                                <i class="bi bi-cart" style="font-size: 1.5rem;"></i> Mina bud</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark fs-5 @(ViewData["Title"]?.ToString() == "Mina auktioner" ? "active" : "")"
-                                asp-area="" asp-controller="Auction" asp-action="Index">
-                                <i class="bi bi-card-list" style="font-size: 1.5rem;"></i> Mina auktioner</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark fs-5 @(ViewData["Title"]?.ToString() == "Ny auktion" ? "active" : "")"
-                                asp-area="" asp-controller="Auction" asp-action="Create">
-                                <i class="bi bi-cash-coin" style="font-size: 1.5rem;"></i> Sälja</a>
-                        </li>
+        <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom shadow-lg">
+    <div class="container-fluid">
+        <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+            <img src="~/images/cardhaven.svg" alt="logo">
+            <p>Card Haven</p>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-                    </ul>
-                    <partial name="_LoginPartial" />
-                </div>
-            </div>
-        </nav>
+        <div class="navbar-collapse collapse" id="navbarSupportedContent">
+            <ul class="nav flex-grow-1 d-flex justify-content-center align-items-center nav-pills" id="first-navbar">
+                <li class="nav-item">
+                    <a class="nav-link text-dark fs-5 @(ViewData["Title"]?.ToString() == "Start" ? "active" : "")"
+                       asp-area="" asp-controller="Home" asp-action="Index">
+                        <i class="bi bi-house-door"></i>Start
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark fs-5 @(ViewData["Title"]?.ToString() == "Mina Bud" ? "active" : "")"
+                       asp-area="" asp-controller="Bid" asp-action="Index">
+                        <i class="bi bi-cart"></i> Mina bud
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark fs-5 @(ViewData["Title"]?.ToString() == "Mina auktioner" ? "active" : "")"
+                       asp-area="" asp-controller="Auction" asp-action="Index">
+                        <i class="bi bi-card-list"></i> Mina auktioner
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark fs-5 @(ViewData["Title"]?.ToString() == "Ny auktion" ? "active" : "")"
+                       asp-area="" asp-controller="Auction" asp-action="Create">
+                        <i class="bi bi-cash-coin"></i> Sälja
+                    </a>
+                </li>
+            </ul>
+
+            <partial name="_LoginPartial" />
+        </div>
+    </div>
+</nav>
     </header>
-    <div class="container d-flex justify-content-center align-items-center">
+    <div class="container-fluid d-flex justify-content-center align-items-center p-0">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
