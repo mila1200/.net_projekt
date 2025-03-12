@@ -21,10 +21,10 @@
                 //auktionen kopplat till budet
                 var auction = bid.Auction;
                 var highestBid = auction.Bids.OrderByDescending(b => b.Amount).FirstOrDefault();
-
                 var currentUser = await UserManager.GetUserAsync(User);
+                var isAuctionClosed = auction.IsClosed || auction.EndTime <= DateTime.Now;
 
-                <div class="card m-2">
+                <div class="card m-2 @(isAuctionClosed ? "auction-closed" : "")">
                     <a asp-controller="Auction" asp-action="Details" asp-route-id="@bid.Auction.Id"
                         class="text-decoration-none text-dark">
                         <img src="@Url.Content("~/images/" + bid.Auction.ImageName)" class="card-img-top" loading="lazy"
@@ -37,25 +37,20 @@
                             <p class="card-text"><strong>Mitt bud:</strong> @bid.Amount kronor</p>
 
                             <!--Om auktionen är avslutad-->
-                            @if (auction.IsClosed || auction.EndTime <= DateTime.Now)
+                            @if (isAuctionClosed)
                             {
                                 //om användaren har högsta bud
-                                @if (highestBid != null && highestBid.UserId == bid.UserId)
-                                {
-                                    @if (currentUser != null && currentUser.Id == bid.UserId)
-                                    {
-                                        <span class="text-success">Grattis! Du vann auktionen.</span>
-                                    }
+                                @if(highestBid != null && highestBid.UserId == bid.UserId && currentUser?.Id == bid.UserId)
+                                                    {
+                                    <span class="text-success">Grattis! Du vann auktionen.</span>
                                 }
-                            }
-                            else
-                            {
-                                <!--Om auktionen är avslutad men användaren vann inte-->
-                                @if (currentUser != null && currentUser.Id == bid.UserId)
+                                else
                                 {
+                                    <!--Om auktionen är avslutad men användaren vann inte-->
                                     <span class="text-danger">Auktionen är avslutad.- Du vann tyvärr inte.</span>
                                 }
                             }
+
                         </div>
                     </a>
                 </div>

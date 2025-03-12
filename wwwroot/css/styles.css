@@ -69,6 +69,12 @@ main {
   object-fit: cover;
 }
 
+.auction-closed {
+  /*Inga klick om auktionen är stängd*/
+  pointer-events: none;
+  opacity: 0.5;
+}
+
 #offer-img {
   width: 100%;
   max-width: 350px;
@@ -83,6 +89,10 @@ footer {
   box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
   background-color: #f8f9fa;
   margin-top: auto;
+}
+
+footer a {
+  color: black;
 }
 
 @media (max-width: 994px) {
