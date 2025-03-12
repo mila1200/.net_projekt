@@ -1,4 +1,6 @@
+@using Microsoft.AspNetCore.Identity
 @model IEnumerable<CardHaven.Models.BidModel>
+@inject UserManager<ApplicationUserModel> UserManager
 
 @{
     ViewData["Title"] = "Mina Bud";
@@ -16,21 +18,47 @@
         {
             @foreach (var bid in Model)
             {
-                
-                    <div class="card m-2">
-                        <a asp-controller="Auction" asp-action="Details" asp-route-id="@bid.Auction.Id"
-                            class="text-decoration-none text-dark">
-                            <img src="@Url.Content("~/images/" + bid.Auction.ImageName)" class="card-img-top" loading="lazy"
-                                alt="@bid.Auction.Name">
-                            <div class="card-body">
-                                <h5 class="card-title">@bid.Auction.Name</h5>
-                                <p class="card-text"><strong>Set:</strong> @bid.Auction.Set</p>
-                                <p class="card-text"><strong>Slutar:</strong> @bid.Auction.EndTime.ToString("g")</p>
-                                <p class="card-text"><strong>Nuvarande bud:</strong> @bid.Auction.AskingPrice kronor</p>
-                                <p class="card-text"><strong>Mitt bud:</strong> @bid.Amount kronor</p>
-                            </div>
-                        </a>
-                    </div>
+                //auktionen kopplat till budet
+                var auction = bid.Auction;
+                var highestBid = auction.Bids.OrderByDescending(b => b.Amount).FirstOrDefault();
+
+                var currentUser = await UserManager.GetUserAsync(User);
+
+                <div class="card m-2">
+                    <a asp-controller="Auction" asp-action="Details" asp-route-id="@bid.Auction.Id"
+                        class="text-decoration-none text-dark">
+                        <img src="@Url.Content("~/images/" + bid.Auction.ImageName)" class="card-img-top" loading="lazy"
+                            alt="@bid.Auction.Name">
+                        <div class="card-body">
+                            <h5 class="card-title">@bid.Auction.Name</h5>
+                            <p class="card-text"><strong>Set:</strong> @bid.Auction.Set</p>
+                            <p class="card-text"><strong>Slutar:</strong> @bid.Auction.EndTime.ToString("g")</p>
+                            <p class="card-text"><strong>Nuvarande bud:</strong> @bid.Auction.AskingPrice kronor</p>
+                            <p class="card-text"><strong>Mitt bud:</strong> @bid.Amount kronor</p>
+
+                            <!--Om auktionen är avslutad-->
+                            @if (auction.IsClosed || auction.EndTime <= DateTime.Now)
+                            {
+                                //om användaren har högsta bud
+                                @if (highestBid != null && highestBid.UserId == bid.UserId)
+                                {
+                                    @if (currentUser != null && currentUser.Id == bid.UserId)
+                                    {
+                                        <span class="text-success">Grattis! Du vann auktionen.</span>
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                <!--Om auktionen är avslutad men användaren vann inte-->
+                                @if (currentUser != null && currentUser.Id == bid.UserId)
+                                {
+                                    <span class="text-danger">Auktionen är avslutad.- Du vann tyvärr inte.</span>
+                                }
+                            }
+                        </div>
+                    </a>
+                </div>
             }
         }
     </div>

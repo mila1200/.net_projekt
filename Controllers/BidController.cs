@@ -103,7 +103,7 @@ namespace CardHaven.Controllers
                 return NotFound();
             }
 
-            //är budet högre än aktuellt bud, om inte skriv ut felmeddelande?
+            //är budet högre än aktuellt bud, om inte skriv ut felmeddelande
             if(bidModel.Amount <= auction.AskingPrice)
             {
                 TempData["ErrorMessage"] = "Budet måste vara högre än aktuellt bud";

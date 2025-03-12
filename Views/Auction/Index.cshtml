@@ -42,7 +42,7 @@
                         <p class="card-text"><strong>Slutar:</strong> @auction.EndTime.ToString("g")</p>
                         <p class="card-text"><strong>Nuvarande bud:</strong> @auction.AskingPrice kronor</p>
                         @if (!auction.IsClosed && auction.EndTime > DateTime.Now)
-                        {   
+                        {
                             //tar bort möjlighet att redigera/radera vid bud
                             @if (!auction.Bids.Any())
                             {
@@ -55,15 +55,8 @@
                             }
                         }
                         else
-                        {   //om användaren har högst bud, får meddelande om att auktionen vunnits
-                            @if (highestBid != null && currentUser != null && highestBid.UserId == currentUser.Id)
-                            {
-                                <span class="text-success">Grattis! Du vann auktionen.</span>
-                            }
-                            else
-                            {
-                                <span class="text-danger">Auktionen är avslutad</span>
-                            }
+                        {
+                            <span class="text-danger">Auktionen är avslutad</span>
                         }
                     </div>
 
