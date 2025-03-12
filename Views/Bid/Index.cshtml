@@ -22,6 +22,7 @@
                 var auction = bid.Auction;
                 var highestBid = auction.Bids.OrderByDescending(b => b.Amount).FirstOrDefault();
                 var currentUser = await UserManager.GetUserAsync(User);
+                //kontroll av status
                 var isAuctionClosed = auction.IsClosed || auction.EndTime <= DateTime.Now;
 
                 <div class="card m-2 @(isAuctionClosed ? "auction-closed" : "")">
