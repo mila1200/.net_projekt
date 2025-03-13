@@ -15,12 +15,16 @@
         }
         else
         {
-            @foreach (var auction in Model)
-            {
-
-                //hämta högst bud och användare
-                var highestBid = auction.Bids.OrderByDescending(b => b.Amount).FirstOrDefault();
+            //hämta användare
                 var currentUser = await UserManager.GetUserAsync(User);
+                //filtrera auktioner baserat på användarID, omvandlar till sträng då det annars är olika värden
+                var userAuctions = Model.Where(auction => auction.SellerId == currentUser?.Id.ToString());
+
+            //loopar igenom användarens auktioner
+            @foreach (var auction in userAuctions)
+            {
+                //hämta högsta bud
+                var highestBid = auction.Bids.OrderByDescending(b => b.Amount).FirstOrDefault();
 
                 //opacitet på 50% om auktionen är avslutad
                 <div class="card h-100 mt-0">
