@@ -39,7 +39,19 @@ namespace CardHaven.Controllers
         // GET: Auction
         public async Task<IActionResult> Index()
         {
+            //hämtar användare
+            var currentUser = await _userManager.GetUserAsync(User);
+
+
+            //nullkontroll för att ta bort varningar
+            if (currentUser == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            //filtrera auktionerna för den inloggade användaren baserat på sellerId
             var applicationDbContext = _context.Auctions
+            .Where(a => a.SellerId == currentUser.Id.ToString())
             .Include(a => a.Seller)
             .Include(a => a.Bids)
             .OrderBy(a => a.EndTime);
@@ -191,15 +203,19 @@ namespace CardHaven.Controllers
             if (ModelState.IsValid)
             {
                 try
-                {
+                {    // AsNotracking för att unvika spårning av två objekt. För att undvika felmeddelande
+                    var existingAuction = await _context.Auctions.AsNoTracking().FirstOrDefaultAsync(a => a.Id == id);
+                    if (existingAuction != null)
+                    {
+                        auctionModel.SellerId = existingAuction.SellerId;
+                    }
+
                     // Om ingen ny bild är vald, behåll den gamla bilden
                     if (auctionModel.ImageFile == null)
                     {
-                        // AsNotracking för att unvika spårning av två objekt. För att undvika felmeddelande
-                        var existingAuction = await _context.Auctions.AsNoTracking().FirstOrDefaultAsync(a => a.Id == id);
                         if (existingAuction != null)
                         {   //behåll gamla bilden
-                            auctionModel.ImageName = existingAuction.ImageName; 
+                            auctionModel.ImageName = existingAuction.ImageName;
                         }
                     }
                     else

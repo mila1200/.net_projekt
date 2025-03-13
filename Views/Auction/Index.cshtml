@@ -15,13 +15,8 @@
         }
         else
         {
-            //hämta användare
-                var currentUser = await UserManager.GetUserAsync(User);
-                //filtrera auktioner baserat på användarID, omvandlar till sträng då det annars är olika värden
-                var userAuctions = Model.Where(auction => auction.SellerId == currentUser?.Id.ToString());
-
-            //loopar igenom användarens auktioner
-            @foreach (var auction in userAuctions)
+            //loopar igenom auktioner
+            @foreach (var auction in Model)
             {
                 //hämta högsta bud
                 var highestBid = auction.Bids.OrderByDescending(b => b.Amount).FirstOrDefault();
